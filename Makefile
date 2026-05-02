@@ -1,5 +1,5 @@
 proxy: main.cpp proxyServer.cpp Authenticator.cpp WebsiteFilter.cpp Logger.cpp
-	g++ -pthread main.cpp ProxyServer.cpp Authenticator.cpp WebsiteFilter.cpp Logger.cpp Cache.cpp -o proxy
+	g++ main.cpp ProxyServer.cpp Authenticator.cpp WebsiteFilter.cpp Logger.cpp -o proxy
 run: proxy
 	./proxy
 

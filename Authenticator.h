@@ -1,19 +1,16 @@
 #ifndef AUTHENTICATOR_H
 #define AUTHENTICATOR_H
-
+using namespace std;
 #include <string>
 #include <map>
-
 class Authenticator {
 private:
-    std::map<std::string, std::pair<std::string, std::string>> users;
-
+map<string, pair<string, string>> users;
 public:
-    void loadUsers(const std::string& filename);
-    std::string login(const std::string& user, const std::string& pass);
-    void signup(const std::string& user,
-                const std::string& pass,
-                const std::string& role);
+void loadUsers(const string& filename);
+string login(const string& user, const string& pass);
+void signup(const string& user,
+const string& pass,
+const string& role);
 };
-
 #endif

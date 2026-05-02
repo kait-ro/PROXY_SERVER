@@ -1,16 +1,13 @@
 #ifndef WEBSITE_FILTER_H
 #define WEBSITE_FILTER_H
-
 #include <string>
 #include <map>
-
+using namespace std;
 class WebsiteFilter {
 private:
-    std::map<std::string, bool> blockedSites;
-
+map<string, bool> blockedSites;
 public:
-    void loadSites(const std::string& filename);
-    bool isAllowed(const std::string& domain);
+void loadSites(const string& filename);
+bool isAllowed(const string& domain);
 };
-
 #endif
