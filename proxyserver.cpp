@@ -179,6 +179,14 @@ struct hostent* server = gethostbyname(host.c_str());
 if (server == NULL)
 {
 cout << "DNS failed\n";
+
+    string response =
+    "HTTP/1.1 502 Bad Gateway\r\n"
+    "Connection: close\r\n\r\n";
+
+    send(client_socket, response.c_str(), response.length(), 0);
+    close(client_socket);
+
 return;
 }
 // CONNECT
@@ -186,6 +194,14 @@ int remote_socket = socket(AF_INET, SOCK_STREAM, 0);
 if (remote_socket < 0)
 {
 cout << "Socket creation failed\n";
+
+    string response =
+    "HTTP/1.1 500 Internal Server Error\r\n"
+    "Connection: close\r\n\r\n";
+
+    send(client_socket, response.c_str(), response.length(), 0);
+    close(client_socket);
+
 return;
 }
 struct sockaddr_in server_addr{};
@@ -198,8 +214,15 @@ if (connect(remote_socket, (sockaddr*)&server_addr,
 sizeof(server_addr)) < 0)
 {
 cout << "HTTPS connect failed\n";
-close(remote_socket);
-return;
+    string response =
+    "HTTP/1.1 504 Gateway Timeout\r\n"
+    "Connection: close\r\n\r\n";
+
+    send(client_socket, response.c_str(), response.length(), 0);
+
+    close(remote_socket);
+    close(client_socket);
+    return;
 }
 // TUNNEL ESTABLISHED
 string response =
@@ -305,6 +328,14 @@ int remote_socket = socket(AF_INET, SOCK_STREAM, 0); // AF_INET means ipv4 addre
 if (remote_socket < 0)
 {
 cout << "Socket creation failed\n";
+
+    string response =
+    "HTTP/1.1 500 Internal Server Error\r\n"
+    "Connection: close\r\n\r\n";
+
+    send(client_socket, response.c_str(), response.length(), 0);
+    close(client_socket);
+
 return;
 }
 struct sockaddr_in server_addr{};

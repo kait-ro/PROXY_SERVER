@@ -1,5 +1,8 @@
+CXXFLAGS = -I/opt/homebrew/opt/openssl@3/include
+LDFLAGS = -L/opt/homebrew/opt/openssl@3/lib -lssl -lcrypto
+
 proxy: main.cpp proxyServer.cpp Authenticator.cpp WebsiteFilter.cpp Logger.cpp LRUCache.cpp
-	g++ main.cpp ProxyServer.cpp Authenticator.cpp WebsiteFilter.cpp Logger.cpp LRUCache.cpp -o proxy
+	g++ main.cpp ProxyServer.cpp Authenticator.cpp WebsiteFilter.cpp Logger.cpp LRUCache.cpp $(CXXFLAGS) $(LDFLAGS) -o proxy
 run: proxy
 	./proxy
 
