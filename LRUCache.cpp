@@ -14,7 +14,6 @@ bool LRUCache::get(const string& key, string& value)
 
     auto it = cacheMap[key];
 
-    // move to front (most recently used)
     cacheList.splice(cacheList.begin(), cacheList, it);
 
     value = it->second;

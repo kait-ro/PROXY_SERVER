@@ -19,9 +19,8 @@
 using namespace std;
 ProxyServer::ProxyServer(int port)
 {
-this->port = port;
-auth.loadUsers("users.txt");
-filter.loadSites("blocked_sites.txt");
+    this->port = port;
+    auth.loadUsers("users.txt");
     sem_init(&clientSlots, 0, 20);
 }
 string ProxyServer::extractHost(const string& request)
@@ -35,12 +34,15 @@ return request.substr(start, end - start);
 size_t pos = request.find("Host:");
 if (pos == string::npos)
 return "";
-size_t start = pos + 6;
+    size_t start = pos + 6;
+    while (start < request.size() && request[start] == ' ')
+    start++;
 size_t end = request.find("\r\n", start);
 string host = request.substr(start, end - start);
 size_t colonPos = host.find(":");
 if (colonPos != string::npos)
 host = host.substr(0, colonPos);
+transform(host.begin(), host.end(), host.begin(), ::tolower);
 return host;
 }
 void ProxyServer::setUser(const string& user, const
@@ -83,7 +85,6 @@ int bytes = recv(client_socket, buffer.data(),
 BUFFER_SIZE, 0);
 if (bytes <= 0) return;
 cout << "START handling on thread: " << this_thread::get_id() << endl;
-cout << "END handling on thread: " << this_thread::get_id() << endl;
 string request(buffer.data(), bytes);
 if (request.find("CONNECT") != 0)
 {
@@ -154,7 +155,7 @@ if (request.find("CONNECT") == 0)
 string host = extractHost(request);
 cout << "HTTPS CONNECT to: " << host << endl;
 // FILTER
-if (role != "admin" && !filter.isAllowed(host))
+if (filter.isBlockedForRole(host, role))
 {
 cout << "Blocked HTTPS site: " << host << endl;
 string response =
@@ -166,7 +167,6 @@ string response =
 "Blocked by proxy";
 send(client_socket, response.c_str(), response.length(),
 0);
-close(client_socket);
 logger.log(username + "(" + role + ")", host, "HTTPS",
 "BLOCKED");
 close(client_socket);
@@ -257,6 +257,7 @@ send(client_socket, buffer.data(), bytes, 0);
 }
 }
 close(remote_socket);
+close(client_socket); 
 return;
 }
 //=========================================================
@@ -296,12 +297,13 @@ if (isGet && cache.get(cacheKey, cachedResponse))
 {
 cout << "CACHE HIT\n";
 send(client_socket, cachedResponse.c_str(), cachedResponse.size(), 0);
+close(client_socket); 
 return;
 }
 
 
 // FILTER
-if (role != "admin" && !filter.isAllowed(host))
+if (filter.isBlockedForRole(host, role))
 {
 cout << "Blocked HTTP site: " << host << endl;
 string response =
@@ -319,8 +321,14 @@ logger.log(username + "(" + role + ")", host, "HTTP",
 struct hostent* server = gethostbyname(host.c_str());
 if (server == NULL)
 {
-cout << "Could not find host\n";
-return;
+    cout << "Could not find host\n";
+    string response =
+    "HTTP/1.1 502 Bad Gateway\r\n"
+    "Connection: close\r\n\r\n";
+
+    send(client_socket, response.c_str(), response.length(), 0);
+    close(client_socket);
+    return;
 }
 // CONNECT
 int remote_socket = socket(AF_INET, SOCK_STREAM, 0); // AF_INET means ipv4 addresses(eg: 192.168.0.0)
@@ -347,7 +355,14 @@ if (connect(remote_socket, (sockaddr*)&server_addr,
 sizeof(server_addr)) < 0)
 {
 cout << "Connection to remote server failed\n";
-close(remote_socket);
+    string response =
+    "HTTP/1.1 504 Gateway Timeout\r\n"
+    "Connection: close\r\n\r\n";
+
+    send(client_socket, response.c_str(), response.length(), 0);
+
+    close(remote_socket);
+    close(client_socket);
 return;
 }
 cout << "Connected to HTTP server\n";
@@ -392,7 +407,7 @@ if (!cacheKey.empty() && isGet && fullResponse.size() < 100000)
 cache.put(cacheKey, fullResponse);
 cout << "CACHE STORED\n";
 }
-
+cout << "END handling on thread: " << this_thread::get_id() << endl;
 close(remote_socket);
 }
 
@@ -415,7 +430,6 @@ void ProxyServer::workerThread()
 
         sem_wait(&clientSlots);
         handleClient(client_socket);
-        close(client_socket);
         sem_post(&clientSlots); 
     }
 }
@@ -447,6 +461,8 @@ void ProxyServer::startServer()
 
     const int THREAD_COUNT = 20;
     vector<thread> workers;
+    for (auto& t : workers)
+    t.detach();
 
     for (int i = 0; i < THREAD_COUNT; i++)
     {
