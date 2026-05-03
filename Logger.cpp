@@ -17,7 +17,11 @@ void Logger::log(const std::string& user,
 
     if (logFile.is_open())
     {
-        logFile << user << " | " << host << " | " << type << " | " << status << std::endl;
+        time_t now = time(0);
+        char* dt = ctime(&now);
+        std::string timestamp(dt);
+        timestamp.pop_back();
+        logFile << "[" << timestamp << "] " << user << " | " << host << " | " << type << " | " << status << std::endl;
         logFile.flush();
     }
 }
