@@ -121,40 +121,35 @@ bool WebsiteFilter::isBlockedForRole(const string& domain, const string& role)
 {
     string d = normalizeDomain(domain);
 
-    // ADMIN → no restrictions
     if (role == "admin")
         return false;
 
-    // GENERAL BLOCK
-    if (blockedSites.find(d) != blockedSites.end())
+    auto isMatch = [&](const unordered_set<string>& set) {
+        if (set.find(d) != set.end())
+            return true;
+
+        size_t pos = d.find('.');
+        while (pos != string::npos)
+        {
+            string sub = d.substr(pos + 1);
+
+            if (set.find(sub) != set.end())
+                return true;
+
+            pos = d.find('.', pos + 1);
+        }
+        return false;
+    };
+
+    if (isMatch(blockedSites))
         return true;
 
-    // SUBDOMAIN CHECK
-    size_t pos = d.find('.');
-    while (pos != string::npos)
+    if (role == "user")
     {
-        string sub = d.substr(pos + 1);
-
-        if (blockedSites.find(sub) != blockedSites.end())
+        if (isMatch(gamingSites))
             return true;
 
-        pos = d.find('.', pos + 1);
-    }
-
-    // ROLE-BASED CATEGORY FILTERING
-
-    if (role == "student" || role == "user")
-    {
-        if (gamingSites.find(d) != gamingSites.end())
-            return true;
-
-        if (adultSites.find(d) != adultSites.end())
-            return true;
-    }
-
-    if (role == "restricted")
-    {
-        if (socialSites.find(d) != socialSites.end())
+        if (isMatch(socialSites))
             return true;
     }
 
