@@ -21,7 +21,7 @@ ProxyServer::ProxyServer(int port)
 {
     this->port = port;
     auth.loadUsers("users.txt");
-    sem_init(&clientSlots, 0, 20);
+    sem_init(&clientSlots, 0, 5);
 }
 string ProxyServer::extractHost(const string& request)
 {
@@ -143,6 +143,7 @@ if (role == "")
 
     send(client_socket, response.c_str(), response.length(), 0);
     cout << "Authentication failed\n";
+    cout << "END handling on thread: " << this_thread::get_id() << endl;
     close(client_socket);
     return;
 }
@@ -169,6 +170,7 @@ send(client_socket, response.c_str(), response.length(),
 0);
 logger.log(username + "(" + role + ")", host, "HTTPS",
 "BLOCKED");
+cout << "END handling on thread: " << this_thread::get_id() << endl;
 close(client_socket);
 return;
 }
@@ -186,6 +188,7 @@ cout << "DNS failed\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
     close(client_socket);
+    cout << "END handling on thread: " << this_thread::get_id() << endl;
 
 return;
 }
@@ -201,7 +204,7 @@ cout << "Socket creation failed\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
     close(client_socket);
-
+    cout << "END handling on thread: " << this_thread::get_id() << endl;
 return;
 }
 struct sockaddr_in server_addr{};
@@ -222,6 +225,7 @@ cout << "HTTPS connect failed\n";
 
     close(remote_socket);
     close(client_socket);
+    cout << "END handling on thread: " << this_thread::get_id() << endl;
     return;
 }
 // TUNNEL ESTABLISHED
@@ -298,6 +302,7 @@ if (isGet && cache.get(cacheKey, cachedResponse))
 cout << "CACHE HIT\n";
 send(client_socket, cachedResponse.c_str(), cachedResponse.size(), 0);
 close(client_socket); 
+cout << "END handling on thread: " << this_thread::get_id() << endl;
 return;
 }
 
@@ -313,6 +318,7 @@ send(client_socket, response.c_str(), response.length(),
 logger.log(username + "(" + role + ")", host, "HTTP",
 "BLOCKED");
 close(client_socket);
+cout << "END handling on thread: " << this_thread::get_id() << endl;
 return;
 }
 logger.log(username + "(" + role + ")", host, "HTTP",
@@ -343,7 +349,7 @@ cout << "Socket creation failed\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
     close(client_socket);
-
+    cout << "END handling on thread: " << this_thread::get_id() << endl;
 return;
 }
 struct sockaddr_in server_addr{};
@@ -409,6 +415,7 @@ cout << "CACHE STORED\n";
 }
 cout << "END handling on thread: " << this_thread::get_id() << endl;
 close(remote_socket);
+close(client_socket);
 }
 
 void ProxyServer::workerThread()
@@ -459,7 +466,7 @@ void ProxyServer::startServer()
 
     cout << "Proxy server running on port " << port << endl;
 
-    const int THREAD_COUNT = 20;
+    const int THREAD_COUNT = 5;
     vector<thread> workers;
     for (auto& t : workers)
     t.detach();
