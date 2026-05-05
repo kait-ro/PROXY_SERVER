@@ -15,13 +15,18 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <cstring>
+
 #define BUFFER_SIZE 65536
+
 using namespace std;
+
+thread_local int threadNumber = -1;
+
 ProxyServer::ProxyServer(int port)
 {
     this->port = port;
     auth.loadUsers("users.txt");
-    sem_init(&clientSlots, 0, 5);
+    sem_init(&clientSlots, 0, 20);
 }
 string ProxyServer::extractHost(const string& request)
 {
@@ -84,7 +89,7 @@ vector<char> buffer(BUFFER_SIZE);
 int bytes = recv(client_socket, buffer.data(),
 BUFFER_SIZE, 0);
 if (bytes <= 0) return;
-cout << "START handling on thread: " << this_thread::get_id() << endl;
+cout << "START handling on thread: " << threadNumber << endl;
 string request(buffer.data(), bytes);
 if (request.find("CONNECT") != 0)
 {
@@ -94,16 +99,7 @@ cout << "\nREQUEST RECEIVED:\n" << endl;
 string username = "";
 string role = "";
 
-{
-    std::lock_guard<std::mutex> lock(authMutex);
-    if (authCache.find(client_socket) != authCache.end())
-    {
-        role = authCache[client_socket];
-        username = "cached_user";
-    }
-}
-if (role == "") {
-    size_t authPos = request.find("Proxy-Authorization: Basic ");
+size_t authPos = request.find("Proxy-Authorization: Basic ");
 
 if (authPos != string::npos)
 {
@@ -111,10 +107,12 @@ if (authPos != string::npos)
     size_t end = request.find("\r\n", start);
 
     string encoded = request.substr(start, end - start);
+
     encoded.erase(encoded.find_last_not_of(" \r\n\t") + 1);
-    encoded.erase(0, encoded.find_first_not_of(" \r\n\t"));    
-    
+    encoded.erase(0, encoded.find_first_not_of(" \r\n\t"));
+
     string decoded = base64Decode(encoded);
+
     decoded.erase(decoded.find_last_not_of(" \r\n\t") + 1);
     decoded.erase(0, decoded.find_first_not_of(" \r\n\t"));
 
@@ -128,26 +126,26 @@ if (authPos != string::npos)
         role = auth.login(user, pass);
         username = user;
     }
-    if (role != "")
-    {
-        std::lock_guard<std::mutex> lock(authMutex);
-        authCache[client_socket] = role;
-    }
 }
-}
+cout << "DEBUG → role: '" << role << "' username: '" << username << "'" << endl;
 if (role == "")
 {
     string response =
     "HTTP/1.1 407 Proxy Authentication Required\r\n"
-    "Proxy-Authenticate: Basic realm=\"Proxy\"\r\n\r\n";
+    "Proxy-Authenticate: Basic realm=\"Proxy\"\r\n"
+    "Content-Length: 0\r\n"
+    "Connection: close\r\n\r\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
+
     cout << "Authentication failed\n";
-    cout << "END handling on thread: " << this_thread::get_id() << endl;
+    cout << "END handling on thread: " << threadNumber << endl;
+
     close(client_socket);
     return;
 }
 cout << "Authentication successful (" << role << ")\n";
+bool servedFromCache = false;
 //=========================================================
 // HTTPS HANDLING
 //=========================================================
@@ -168,13 +166,13 @@ string response =
 "Blocked by proxy";
 send(client_socket, response.c_str(), response.length(),
 0);
-logger.log(username + "(" + role + ")", host, "HTTPS",
+logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTPS",
 "BLOCKED");
-cout << "END handling on thread: " << this_thread::get_id() << endl;
+cout << "END handling on thread: " << threadNumber << endl;
 close(client_socket);
 return;
 }
-logger.log(username + "(" + role + ")", host, "HTTPS",
+logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTPS",
 "ALLOWED");
 // DNS
 struct hostent* server = gethostbyname(host.c_str());
@@ -188,7 +186,7 @@ cout << "DNS failed\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
     close(client_socket);
-    cout << "END handling on thread: " << this_thread::get_id() << endl;
+    cout << "END handling on thread: " << threadNumber << endl;
 
 return;
 }
@@ -204,7 +202,7 @@ cout << "Socket creation failed\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
     close(client_socket);
-    cout << "END handling on thread: " << this_thread::get_id() << endl;
+    cout << "END handling on thread: " << threadNumber << endl;
 return;
 }
 struct sockaddr_in server_addr{};
@@ -225,7 +223,7 @@ cout << "HTTPS connect failed\n";
 
     close(remote_socket);
     close(client_socket);
-    cout << "END handling on thread: " << this_thread::get_id() << endl;
+    cout << "END handling on thread: " << threadNumber << endl;
     return;
 }
 // TUNNEL ESTABLISHED
@@ -241,7 +239,7 @@ while (true)
 FD_ZERO(&fds);
 FD_SET(client_socket, &fds);
 FD_SET(remote_socket, &fds);
-int maxfd = std::max(client_socket, remote_socket) + 1;
+int maxfd = max(client_socket, remote_socket) + 1;
 int activity = select(maxfd, &fds, NULL, NULL, NULL);
 if (activity <= 0)
 break;
@@ -299,13 +297,24 @@ bool isGet = (request.find("GET ") == 0);
 string cachedResponse;
 if (isGet && cache.get(cacheKey, cachedResponse))
 {
-cout << "CACHE HIT\n";
-send(client_socket, cachedResponse.c_str(), cachedResponse.size(), 0);
-close(client_socket); 
-cout << "END handling on thread: " << this_thread::get_id() << endl;
-return;
-}
+    servedFromCache = true;
 
+    cout << "CACHE HIT\n";
+
+    send(client_socket, cachedResponse.c_str(), cachedResponse.size(), 0);
+
+    string logUser = "cached_user";
+
+    logger.log(
+        "Thread-" + to_string(threadNumber) + " " + logUser + "(" + role + ")",
+        host,
+        "HTTP",
+        "ALLOWED"
+    );
+
+    close(client_socket);
+    return;
+}
 
 // FILTER
 if (filter.isBlockedForRole(host, role))
@@ -315,14 +324,20 @@ string response =
 "HTTP/1.1 403 Forbidden\r\n\r\nBlocked by proxy";
 send(client_socket, response.c_str(), response.length(),
 0);
-logger.log(username + "(" + role + ")", host, "HTTP",
+logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTP",
 "BLOCKED");
 close(client_socket);
-cout << "END handling on thread: " << this_thread::get_id() << endl;
+cout << "END handling on thread: " << threadNumber << endl;
 return;
 }
-logger.log(username + "(" + role + ")", host, "HTTP",
-"ALLOWED");
+string logUser = servedFromCache ? "cached_user" : username;
+
+logger.log(
+    "Thread-" + to_string(threadNumber) + " " + logUser + "(" + role + ")",
+    host,
+    "HTTP",
+    "ALLOWED"
+);
 // DNS
 struct hostent* server = gethostbyname(host.c_str());
 if (server == NULL)
@@ -349,7 +364,7 @@ cout << "Socket creation failed\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
     close(client_socket);
-    cout << "END handling on thread: " << this_thread::get_id() << endl;
+    cout << "END handling on thread: " << threadNumber << endl;
 return;
 }
 struct sockaddr_in server_addr{};
@@ -411,9 +426,16 @@ cout << "Response sent back to browser\n";
 if (!cacheKey.empty() && isGet && fullResponse.size() < 100000)
 {
 cache.put(cacheKey, fullResponse);
-cout << "CACHE STORED\n";
+cout << "CACHE STORED for user: " << username << endl;
+
+logger.log(
+    username + "(" + role + ")",
+    host,
+    "HTTP",
+    "CACHE_STORED"
+);
 }
-cout << "END handling on thread: " << this_thread::get_id() << endl;
+cout << "END handling on thread: " << threadNumber << endl;
 close(remote_socket);
 close(client_socket);
 }
@@ -425,7 +447,7 @@ void ProxyServer::workerThread()
         int client_socket;
 
         {
-            std::unique_lock<std::mutex> lock(queueMutex);
+            unique_lock<mutex> lock(queueMutex);
 
             cv.wait(lock, [this] {
                 return !clientQueue.empty();
@@ -466,15 +488,19 @@ void ProxyServer::startServer()
 
     cout << "Proxy server running on port " << port << endl;
 
-    const int THREAD_COUNT = 5;
+    const int THREAD_COUNT = 20;
     vector<thread> workers;
     for (auto& t : workers)
     t.detach();
 
-    for (int i = 0; i < THREAD_COUNT; i++)
-    {
-        workers.emplace_back(&ProxyServer::workerThread, this);
-    }
+for (int i = 0; i < THREAD_COUNT; i++)
+{
+    workers.emplace_back([this, i]() {
+        threadNumber = i + 1;
+        cout << "Thread-" << threadNumber << " started\n";
+        workerThread();
+    });
+}
 
     while (true)
     {

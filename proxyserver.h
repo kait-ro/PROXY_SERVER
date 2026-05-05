@@ -10,6 +10,9 @@
 #include <mutex>
 #include <condition_variable>
 #include <semaphore.h>
+#include <atomic>
+
+extern thread_local int threadNumber;
 
 class ProxyServer
 {
@@ -24,7 +27,6 @@ std::string currentRole;
     std::queue<int> clientQueue;
     std::mutex queueMutex;
     std::condition_variable cv;
-    std::unordered_map<int, std::string> authCache;
     std::mutex authMutex;
     sem_t clientSlots;
     LRUCache cache{5}; 

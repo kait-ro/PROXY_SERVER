@@ -1,4 +1,5 @@
 #include "LRUCache.h"
+#include "proxyserver.h"
 #include <iostream>
 using namespace std;
 
@@ -10,7 +11,7 @@ LRUCache::LRUCache(int cap)
 bool LRUCache::get(const string& key, string& value)
 {
     lock_guard<mutex> lock(cacheMutex);
-    cout << "Cache accessed by thread: " << this_thread::get_id() << endl;
+    cout << "Cache accessed by thread: " << threadNumber << endl;
 
     if (cacheMap.find(key) == cacheMap.end())
         return false;
