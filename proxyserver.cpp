@@ -429,7 +429,7 @@ cache.put(cacheKey, fullResponse);
 cout << "CACHE STORED for user: " << username << endl;
 
 logger.log(
-    username + "(" + role + ")",
+    "Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")",
     host,
     "HTTP",
     "CACHE_STORED"
