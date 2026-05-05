@@ -18,10 +18,10 @@ void Logger::log(const std::string& user,
     if (logFile.is_open())
     {
         time_t now = time(0);
-        char* dt = ctime(&now);
-        std::string timestamp(dt);
-        timestamp.pop_back();
-        logFile << "[" << timestamp << "] " << user << " | " << host << " | " << type << " | " << status << std::endl;
+        struct tm* tm_info = localtime(&now);
+        char timeStr[9];
+        strftime(timeStr, sizeof(timeStr), "%H:%M:%S", tm_info);
+        logFile << "[" << timeStr << "] " << user << " | " << host << " | " << type << " | " << status << std::endl;
         logFile.flush();
     }
 }

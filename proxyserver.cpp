@@ -11,12 +11,90 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <sys/types.h>
-#include <sys/wait.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <cstring>
+#include <fcntl.h>
+#include <errno.h>
+#include <unordered_map>
+#include <mutex>
+#include <ctime>
 
 #define BUFFER_SIZE 65536
+#define CONNECT_TIMEOUT_SEC 10
+#define RECV_TIMEOUT_SEC    30
+#define DNS_CACHE_TTL_SEC   30
+
+// Thread-safe DNS cache: hostname -> (ipv4 string, expiry timestamp)
+static mutex dnsCacheMutex;
+static unordered_map<string, pair<string, time_t>> dnsCache;
+
+// Returns resolved IPv4 address string for host, or "" on failure.
+// Results are cached for DNS_CACHE_TTL_SEC seconds to avoid per-request lookups.
+static string resolveHost(const string& host)
+{
+    {
+        lock_guard<mutex> lock(dnsCacheMutex);
+        auto it = dnsCache.find(host);
+        if (it != dnsCache.end() && time(nullptr) < it->second.second)
+            return it->second.first;
+    }
+
+    struct addrinfo hints{}, *res;
+    hints.ai_family   = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+    if (getaddrinfo(host.c_str(), nullptr, &hints, &res) != 0)
+        return "";
+
+    char ip[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &reinterpret_cast<struct sockaddr_in*>(res->ai_addr)->sin_addr,
+              ip, sizeof(ip));
+    freeaddrinfo(res);
+
+    string ipStr(ip);
+    {
+        lock_guard<mutex> lock(dnsCacheMutex);
+        dnsCache[host] = {ipStr, time(nullptr) + DNS_CACHE_TTL_SEC};
+    }
+    return ipStr;
+}
+
+// Returns true if non-blocking connect on fd completes within CONNECT_TIMEOUT_SEC seconds.
+static bool connectWithTimeout(int fd, const struct sockaddr* addr, socklen_t addrlen)
+{
+    int flags = fcntl(fd, F_GETFL, 0);
+    fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+
+    int ret = connect(fd, addr, addrlen);
+    if (ret == 0)
+    {
+        fcntl(fd, F_SETFL, flags);
+        return true;
+    }
+    if (errno != EINPROGRESS)
+    {
+        fcntl(fd, F_SETFL, flags);
+        return false;
+    }
+
+    fd_set writefds;
+    FD_ZERO(&writefds);
+    FD_SET(fd, &writefds);
+    struct timeval tv = {CONNECT_TIMEOUT_SEC, 0};
+
+    ret = select(fd + 1, NULL, &writefds, NULL, &tv);
+    if (ret <= 0)
+    {
+        fcntl(fd, F_SETFL, flags);
+        return false;
+    }
+
+    int err = 0;
+    socklen_t errlen = sizeof(err);
+    getsockopt(fd, SOL_SOCKET, SO_ERROR, &err, &errlen);
+    fcntl(fd, F_SETFL, flags);
+    return err == 0;
+}
 
 using namespace std;
 
@@ -26,7 +104,6 @@ ProxyServer::ProxyServer(int port)
 {
     this->port = port;
     auth.loadUsers("users.txt");
-    sem_init(&clientSlots, 0, 20);
 }
 string ProxyServer::extractHost(const string& request)
 {
@@ -145,7 +222,6 @@ if (role == "")
     return;
 }
 cout << "Authentication successful (" << role << ")\n";
-bool servedFromCache = false;
 //=========================================================
 // HTTPS HANDLING
 //=========================================================
@@ -174,9 +250,17 @@ return;
 }
 logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTPS",
 "ALLOWED");
-// DNS
-struct hostent* server = gethostbyname(host.c_str());
-if (server == NULL)
+// FIX 15: Parse port from CONNECT line (e.g. "CONNECT host:443 HTTP/1.1")
+int connectPort = 443;
+{
+size_t portColon = request.find(":", request.find("CONNECT ") + 8);
+size_t portEnd   = request.find(" ", portColon);
+if (portColon != string::npos && portEnd != string::npos)
+    connectPort = stoi(request.substr(portColon + 1, portEnd - portColon - 1));
+}
+// DNS with 30s cache — avoids repeated lookups for the same host
+string httpsIP = resolveHost(host);
+if (httpsIP.empty())
 {
 cout << "DNS failed\n";
 
@@ -205,14 +289,11 @@ cout << "Socket creation failed\n";
     cout << "END handling on thread: " << threadNumber << endl;
 return;
 }
-struct sockaddr_in server_addr{};
-server_addr.sin_family = AF_INET;
-server_addr.sin_port = htons(443);
-memcpy(&server_addr.sin_addr.s_addr,
-server->h_addr,
-server->h_length);
-if (connect(remote_socket, (sockaddr*)&server_addr,
-sizeof(server_addr)) < 0)
+struct sockaddr_in httpsAddr{};
+httpsAddr.sin_family = AF_INET;
+httpsAddr.sin_port   = htons(connectPort);
+inet_pton(AF_INET, httpsIP.c_str(), &httpsAddr.sin_addr);
+if (!connectWithTimeout(remote_socket, (sockaddr*)&httpsAddr, sizeof(httpsAddr)))
 {
 cout << "HTTPS connect failed\n";
     string response =
@@ -259,7 +340,7 @@ send(client_socket, buffer.data(), bytes, 0);
 }
 }
 close(remote_socket);
-close(client_socket); 
+close(client_socket);
 return;
 }
 //=========================================================
@@ -286,7 +367,13 @@ string path = "/";
 if (slashPos != string::npos)
 path = url.substr(slashPos);
 
-cacheKey = host + path;
+string normalizedHost = host;
+transform(normalizedHost.begin(), normalizedHost.end(), normalizedHost.begin(), ::tolower);
+
+if (normalizedHost.find("www.") == 0)
+    normalizedHost = normalizedHost.substr(4);
+
+cacheKey = "GET:" + normalizedHost + path;
 }
 else
 {
@@ -294,29 +381,8 @@ cacheKey = host;
 }
 
 bool isGet = (request.find("GET ") == 0);
-string cachedResponse;
-if (isGet && cache.get(cacheKey, cachedResponse))
-{
-    servedFromCache = true;
 
-    cout << "CACHE HIT\n";
-
-    send(client_socket, cachedResponse.c_str(), cachedResponse.size(), 0);
-
-    string logUser = "cached_user";
-
-    logger.log(
-        "Thread-" + to_string(threadNumber) + " " + logUser + "(" + role + ")",
-        host,
-        "HTTP",
-        "ALLOWED"
-    );
-
-    close(client_socket);
-    return;
-}
-
-// FILTER
+// FIX 3: Filter runs before cache — blocked users can't get cached content
 if (filter.isBlockedForRole(host, role))
 {
 cout << "Blocked HTTP site: " << host << endl;
@@ -330,19 +396,32 @@ close(client_socket);
 cout << "END handling on thread: " << threadNumber << endl;
 return;
 }
-string logUser = servedFromCache ? "cached_user" : username;
 
-logger.log(
-    "Thread-" + to_string(threadNumber) + " " + logUser + "(" + role + ")",
-    host,
-    "HTTP",
-    "ALLOWED"
-);
-// DNS
-struct hostent* server = gethostbyname(host.c_str());
-if (server == NULL)
+// FIX 9/10: No servedFromCache flag; use real username in log
+string cachedResponse;
+if (isGet && cache.get(cacheKey, cachedResponse))
 {
-    cout << "Could not find host\n";
+    cout << "CACHE HIT\n";
+
+    send(client_socket, cachedResponse.c_str(), cachedResponse.size(), 0);
+
+    logger.log(
+        "Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")",
+        host,
+        "HTTP",
+        "CACHE HIT"
+    );
+
+    close(client_socket);
+    return;
+}
+
+// DNS (cached)
+string httpIP = resolveHost(host);
+if (httpIP.empty())
+{
+    cout << "DNS resolution failed\n";
+
     string response =
     "HTTP/1.1 502 Bad Gateway\r\n"
     "Connection: close\r\n\r\n";
@@ -351,31 +430,26 @@ if (server == NULL)
     close(client_socket);
     return;
 }
-// CONNECT
-int remote_socket = socket(AF_INET, SOCK_STREAM, 0); // AF_INET means ipv4 addresses(eg: 192.168.0.0)
-// SOCK_STREAM means TCP protocol and TCP decides how data is sent and received, it also ensures that data is received in order and without errors.
+
+// CREATE SOCKET
+int remote_socket = socket(AF_INET, SOCK_STREAM, 0);
 if (remote_socket < 0)
 {
-cout << "Socket creation failed\n";
-
-    string response =
-    "HTTP/1.1 500 Internal Server Error\r\n"
-    "Connection: close\r\n\r\n";
-
-    send(client_socket, response.c_str(), response.length(), 0);
+    cout << "Socket creation failed\n";
     close(client_socket);
-    cout << "END handling on thread: " << threadNumber << endl;
-return;
+    return;
 }
-struct sockaddr_in server_addr{};
-server_addr.sin_family = AF_INET;
-server_addr.sin_port = htons(80);
-memcpy(&server_addr.sin_addr.s_addr, server->h_addr,
-server->h_length);
-if (connect(remote_socket, (sockaddr*)&server_addr,
-sizeof(server_addr)) < 0)
+
+// CONNECT
+struct sockaddr_in httpAddr{};
+httpAddr.sin_family = AF_INET;
+httpAddr.sin_port   = htons(80);
+inet_pton(AF_INET, httpIP.c_str(), &httpAddr.sin_addr);
+
+if (!connectWithTimeout(remote_socket, (sockaddr*)&httpAddr, sizeof(httpAddr)))
 {
-cout << "Connection to remote server failed\n";
+    cout << "Connection to remote server failed\n";
+
     string response =
     "HTTP/1.1 504 Gateway Timeout\r\n"
     "Connection: close\r\n\r\n";
@@ -384,46 +458,93 @@ cout << "Connection to remote server failed\n";
 
     close(remote_socket);
     close(client_socket);
-return;
+    return;
 }
+
 cout << "Connected to HTTP server\n";
-// FIX REQUEST LINE
+// BUILD REQUEST
 string modifiedRequest = request;
+
+// FIX 7: Search for "\r\nConnection:" to avoid matching "Proxy-Connection:"
+size_t connPos = modifiedRequest.find("\r\nConnection:");
+if (connPos != string::npos)
+{
+    connPos += 2; // skip \r\n to point at "Connection:"
+    size_t end = modifiedRequest.find("\r\n", connPos);
+    modifiedRequest.replace(connPos, end - connPos, "Connection: close");
+}
+else
+{
+    size_t headerEnd = modifiedRequest.find("\r\n\r\n");
+    if (headerEnd != string::npos)
+    {
+        modifiedRequest.insert(headerEnd + 2, "Connection: close\r\n");
+    }
+}
+
+// Rewrite absolute URL to relative path (e.g. "GET http://host/path" → "GET /path")
 size_t start = modifiedRequest.find("GET ");
 size_t end = modifiedRequest.find(" HTTP/");
+
 if (start != string::npos && end != string::npos)
 {
-string url = modifiedRequest.substr(start + 4, end -
-(start + 4));
-size_t slashPos = url.find('/', 7);
-string path = "/";
-if (slashPos != string::npos)
-path = url.substr(slashPos);
-modifiedRequest = "GET " + path +
-modifiedRequest.substr(end);
+    string url = modifiedRequest.substr(start + 4, end - (start + 4));
+
+    if (url.find("http://") == 0)
+    {
+        string temp = url.substr(7);
+
+        size_t slashPos = temp.find('/');
+        string path = (slashPos != string::npos) ? temp.substr(slashPos) : "/";
+
+        modifiedRequest.replace(start + 4, url.length(), path);
+    }
 }
-send(remote_socket, modifiedRequest.c_str(),
-modifiedRequest.length(), 0);
+
+// FIX 4: Strip hop-by-hop headers — must not be forwarded to origin server
+for (const string& hdr : {"Proxy-Authorization", "Proxy-Connection"})
+{
+    string search = "\r\n" + hdr + ":";
+    size_t pos = modifiedRequest.find(search);
+    while (pos != string::npos)
+    {
+        size_t lineEnd = modifiedRequest.find("\r\n", pos + 2);
+        if (lineEnd == string::npos) break;
+        modifiedRequest.erase(pos, lineEnd - pos);
+        pos = modifiedRequest.find(search);
+    }
+}
+
+// DEBUG
+cout << "===== FORWARDING REQUEST =====\n";
+cout << modifiedRequest << endl;
 // TIMEOUT
 struct timeval timeout;
-timeout.tv_sec = 1;
+timeout.tv_sec = RECV_TIMEOUT_SEC;
 timeout.tv_usec = 0;
 setsockopt(remote_socket, SOL_SOCKET, SO_RCVTIMEO,
 &timeout, sizeof(timeout));
+// FIX 1: Send the request to the remote server before reading a response
+send(remote_socket, modifiedRequest.c_str(), modifiedRequest.size(), 0);
 // FORWARD RESPONSE
 string fullResponse;
 
-while (true)
+while ((bytes = recv(remote_socket, buffer.data(), BUFFER_SIZE, 0)) > 0)
 {
-bytes = recv(remote_socket, buffer.data(), BUFFER_SIZE, 0);
-if (bytes <= 0) break;
-
-fullResponse.append(buffer.data(), bytes);
-send(client_socket, buffer.data(), bytes, 0);
+    fullResponse.append(buffer.data(), bytes);
+    send(client_socket, buffer.data(), bytes, 0);
 }
 cout << "Response sent back to browser\n";
 
-if (!cacheKey.empty() && isGet && fullResponse.size() < 100000)
+logger.log(
+    "Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")",
+    host,
+    "HTTP",
+    "ALLOWED"
+);
+
+// FIX 2: Only cache valid HTTP responses (non-empty, starts with "HTTP/")
+if (!cacheKey.empty() && isGet && fullResponse.size() > 0 && fullResponse.size() < 100000 && fullResponse.find("HTTP/") == 0)
 {
 cache.put(cacheKey, fullResponse);
 cout << "CACHE STORED for user: " << username << endl;
@@ -432,7 +553,7 @@ logger.log(
     "Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")",
     host,
     "HTTP",
-    "CACHE_STORED"
+    "CACHE STORED"
 );
 }
 cout << "END handling on thread: " << threadNumber << endl;
@@ -455,11 +576,9 @@ void ProxyServer::workerThread()
 
             client_socket = clientQueue.front();
             clientQueue.pop();
-        } 
+        }
 
-        sem_wait(&clientSlots);
         handleClient(client_socket);
-        sem_post(&clientSlots); 
     }
 }
 
@@ -484,23 +603,23 @@ void ProxyServer::startServer()
         return;
     }
 
-    listen(server_fd, 6);
+    // FIX 14: Larger backlog for a 20-thread proxy
+    listen(server_fd, SOMAXCONN);
 
     cout << "Proxy server running on port " << port << endl;
 
+    // FIX 6: Detach each thread immediately after creation
     const int THREAD_COUNT = 20;
     vector<thread> workers;
-    for (auto& t : workers)
-    t.detach();
-
-for (int i = 0; i < THREAD_COUNT; i++)
-{
-    workers.emplace_back([this, i]() {
-        threadNumber = i + 1;
-        cout << "Thread-" << threadNumber << " started\n";
-        workerThread();
-    });
-}
+    for (int i = 0; i < THREAD_COUNT; i++)
+    {
+        workers.emplace_back([this, i]() {
+            threadNumber = i + 1;
+            cout << "Thread-" << threadNumber << " started\n";
+            workerThread();
+        });
+        workers.back().detach();
+    }
 
     while (true)
     {

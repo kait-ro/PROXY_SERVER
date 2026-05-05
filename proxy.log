@@ -2600,3 +2600,716 @@ cached_user(user) | www.google.com | HTTPS | ALLOWED
 [Tue May  5 20:39:34 2026] Thread-1 test1(user) | static.whatsapp.net | HTTPS | ALLOWED
 [Tue May  5 20:39:35 2026] Thread-13 test1(user) | web.whatsapp.com | HTTPS | ALLOWED
 [Tue May  5 20:39:35 2026] Thread-10 test1(user) | web.whatsapp.com | HTTPS | ALLOWED
+[Tue May  5 22:38:05 2026] Thread-1 test1(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:08 2026] Thread-2 test1(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 22:38:08 2026] Thread-3 test1(user) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:38:09 2026] Thread-4 test1(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:09 2026] Thread-5 test1(user) | optimizationguide-pa.googleapis.com | HTTPS | ALLOWED
+[Tue May  5 22:38:09 2026] Thread-6 test1(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:09 2026] Thread-7 test1(user) | www.googleadservices.com | HTTPS | ALLOWED
+[Tue May  5 22:38:09 2026] Thread-8 test1(user) | www.googletagmanager.com | HTTPS | ALLOWED
+[Tue May  5 22:38:09 2026] Thread-9 test1(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:09 2026] Thread-10 test1(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 22:38:09 2026] Thread-11 test1(user) | www.youtube.com | HTTPS | BLOCKED
+[Tue May  5 22:38:09 2026] Thread-8 test1(user) | www.googletagmanager.com | HTTPS | ALLOWED
+[Tue May  5 22:38:10 2026] Thread-13 test1(user) | www.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:38:10 2026] Thread-14 test1(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:10 2026] Thread-15 test1(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:10 2026] Thread-16 test1(user) | www.youtube.com | HTTPS | BLOCKED
+[Tue May  5 22:38:10 2026] Thread-17 test1(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:10 2026] Thread-18 test1(user) | accounts.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:13 2026] Thread-19 test1(user) | ogs.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:13 2026] Thread-20 test1(user) | ogs.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:14 2026] Thread-4 test1(user) | www.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:38:14 2026] Thread-11 test1(user) | ssl.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:38:14 2026] Thread-19 test1(user) | oauthaccountmanager.googleapis.com | HTTPS | ALLOWED
+[Tue May  5 22:38:21 2026] Thread-12 test1(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:38:21 2026] Thread-12 test1(user) | neverssl.com | HTTP | CACHE_STORED
+[Tue May  5 22:38:21 2026] Thread-16 cached_user(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:38:21 2026] Thread-12 cached_user(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:38:22 2026] Thread-16 cached_user(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:38:22 2026] Thread-12 cached_user(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:38:22 2026] Thread-16 cached_user(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:38:24 2026] Thread-12 test1(user) | clients4.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:24 2026] Thread-16 test1(user) | clients4.google.com | HTTPS | ALLOWED
+[Tue May  5 22:38:27 2026] Thread-12 cached_user(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:38:27 2026] Thread-12 cached_user(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:38:27 2026] Thread-12 cached_user(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:38:50 2026] Thread-12 cached_user(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:38:50 2026] Thread-12 cached_user(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:38:50 2026] Thread-12 cached_user(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 22:40:34 2026] Thread-17 test2(user) | optimizationguide-pa.googleapis.com | HTTPS | ALLOWED
+[Tue May  5 22:40:34 2026] Thread-16 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 22:40:34 2026] Thread-18 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 22:40:34 2026] Thread-19 test2(user) | www.googleadservices.com | HTTPS | ALLOWED
+[Tue May  5 22:40:34 2026] Thread-20 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 22:40:34 2026] Thread-3 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:40:35 2026] Thread-9 test2(user) | accounts.google.com | HTTPS | ALLOWED
+[Tue May  5 22:40:35 2026] Thread-10 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:40:35 2026] Thread-12 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:40:36 2026] Thread-1 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:40:38 2026] Thread-8 test2(user) | httpforever.com | HTTPS | ALLOWED
+[Tue May  5 22:40:38 2026] Thread-2 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[Tue May  5 22:40:39 2026] Thread-13 test2(user) | www.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:40:39 2026] Thread-5 test2(user) | ssl.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:40:42 2026] Thread-6 test2(user) | oauthaccountmanager.googleapis.com | HTTPS | ALLOWED
+[Tue May  5 22:40:42 2026] Thread-11 test2(user) | clients4.google.com | HTTPS | ALLOWED
+[Tue May  5 22:40:42 2026] Thread-15 test2(user) | httpforever.com | HTTPS | ALLOWED
+[Tue May  5 22:40:44 2026] Thread-14 test2(user) | r3.i.lencr.org | HTTP | ALLOWED
+[Tue May  5 22:40:44 2026] Thread-14 test2(user) | r3.i.lencr.org | HTTP | CACHE_STORED
+[Tue May  5 22:40:44 2026] Thread-14 cached_user(user) | r3.i.lencr.org | HTTP | ALLOWED
+[Tue May  5 22:40:47 2026] Thread-15 test2(user) | mtalk.google.com | HTTPS | ALLOWED
+[Tue May  5 22:40:49 2026] Thread-14 test2(user) | connectivitycheck.gstatic.com | HTTP | ALLOWED
+[Tue May  5 22:40:49 2026] Thread-14 test2(user) | connectivitycheck.gstatic.com | HTTP | CACHE_STORED
+[Tue May  5 22:40:52 2026] Thread-8 test2(user) | httpforever.com | HTTPS | ALLOWED
+[Tue May  5 22:40:52 2026] Thread-14 test2(user) | httpforever.com | HTTPS | ALLOWED
+[Tue May  5 22:40:53 2026] Thread-8 test2(user) | android.clients.google.com | HTTPS | ALLOWED
+[Tue May  5 22:40:53 2026] Thread-14 cached_user(user) | connectivitycheck.gstatic.com | HTTP | ALLOWED
+[Tue May  5 22:40:57 2026] Thread-14 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 22:41:46 2026] Thread-5 test2(user) | www.googletagmanager.com | HTTPS | ALLOWED
+[Tue May  5 22:41:46 2026] Thread-4 test2(user) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:41:46 2026] Thread-7 test2(user) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:41:46 2026] Thread-5 test2(user) | www.youtube.com | HTTPS | BLOCKED
+[Tue May  5 22:41:46 2026] Thread-5 test2(user) | www.googletagmanager.com | HTTPS | ALLOWED
+[Tue May  5 22:41:46 2026] Thread-7 test2(user) | www.youtube.com | HTTPS | BLOCKED
+[Tue May  5 22:41:46 2026] Thread-7 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 22:42:09 2026] Thread-5 test2(user) | google.com | HTTPS | ALLOWED
+[Tue May  5 22:42:13 2026] Thread-4 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 22:43:10 2026] Thread-9 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 22:43:11 2026] Thread-9 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:43:11 2026] Thread-9 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:43:16 2026] Thread-9 test2(user) | example.com | HTTP | ALLOWED
+[Tue May  5 22:43:16 2026] Thread-9 test2(user) | example.com | HTTP | CACHE_STORED
+[Tue May  5 22:43:16 2026] Thread-9 cached_user(user) | example.com | HTTP | ALLOWED
+[Tue May  5 22:43:16 2026] Thread-9 test2(user) | example.com | HTTPS | ALLOWED
+[Tue May  5 22:43:16 2026] Thread-9 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 22:43:16 2026] Thread-9 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:43:16 2026] Thread-9 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:43:16 2026] Thread-9 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 22:43:16 2026] Thread-9 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[Tue May  5 22:43:16 2026] Thread-9 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:44:35 2026] Thread-3 test2(user) | beacons.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 22:45:59 2026] Thread-1 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 22:46:01 2026] Thread-2 test2(user) | optimizationguide-pa.googleapis.com | HTTPS | ALLOWED
+[Tue May  5 22:46:01 2026] Thread-3 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 22:46:02 2026] Thread-4 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 22:46:02 2026] Thread-5 test2(user) | www.googleadservices.com | HTTPS | ALLOWED
+[Tue May  5 22:46:02 2026] Thread-6 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:46:02 2026] Thread-7 test2(user) | accounts.google.com | HTTPS | ALLOWED
+[Tue May  5 22:46:03 2026] Thread-8 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:46:05 2026] Thread-9 test2(user) | www.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:46:06 2026] Thread-10 test2(user) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:46:06 2026] Thread-11 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[Tue May  5 22:46:06 2026] Thread-12 test2(user) | encrypted-tbn1.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:46:06 2026] Thread-13 test2(user) | www.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:46:06 2026] Thread-14 test2(user) | ssl.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:46:06 2026] Thread-15 test2(user) | www.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:46:16 2026] Thread-16 test2(user) | clients4.google.com | HTTPS | ALLOWED
+[Tue May  5 22:46:17 2026] Thread-17 test2(user) | clients4.google.com | HTTPS | ALLOWED
+[Tue May  5 22:46:19 2026] Thread-18 test2(user) | fonts.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:46:19 2026] Thread-19 test2(user) | www.googletagmanager.com | HTTPS | ALLOWED
+[Tue May  5 22:46:21 2026] Thread-20 test2(user) | example.com | HTTPS | ALLOWED
+[Tue May  5 22:46:21 2026] Thread-13 test2(user) | example.com | HTTPS | ALLOWED
+[Tue May  5 22:46:25 2026] Thread-16 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 22:47:13 2026] Thread-14 test2(user) | example.com | HTTP | ALLOWED
+[Tue May  5 22:47:13 2026] Thread-14 test2(user) | example.com | HTTP | CACHE_STORED
+[Tue May  5 22:47:33 2026] Thread-18 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 22:47:33 2026] Thread-20 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 22:47:33 2026] Thread-18 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 22:47:33 2026] Thread-18 test2(user) | mtalk.google.com | HTTPS | ALLOWED
+[Tue May  5 22:47:33 2026] Thread-20 test2(user) | google.com | HTTPS | ALLOWED
+[Tue May  5 22:53:11 2026] Thread-1 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 22:53:23 2026] Thread-5 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 22:53:23 2026] Thread-6 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 22:53:23 2026] Thread-7 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 22:53:23 2026] Thread-8 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:53:23 2026] Thread-9 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 22:53:23 2026] Thread-10 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:53:24 2026] Thread-11 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:53:28 2026] Thread-12 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[Tue May  5 22:53:28 2026] Thread-13 test2(user) | www.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:53:28 2026] Thread-14 test2(user) | ssl.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:53:35 2026] Thread-15 test2(user) | clients4.google.com | HTTPS | ALLOWED
+[Tue May  5 22:53:42 2026] Thread-16 test2(user) | optimizationguide-pa.googleapis.com | HTTPS | ALLOWED
+[Tue May  5 22:53:42 2026] Thread-18 test2(user) | serenebeautifulslowjoke.neverssl.com | HTTPS | ALLOWED
+[Tue May  5 22:53:42 2026] Thread-17 test2(user) | serenebeautifulslowjoke.neverssl.com | HTTPS | ALLOWED
+[Tue May  5 22:53:47 2026] Thread-20 test2(user) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:53:49 2026] Thread-4 test2(user) | www.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:53:49 2026] Thread-3 test2(user) | fonts.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:53:49 2026] Thread-1 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 22:53:49 2026] Thread-19 test2(user) | www.googleadservices.com | HTTPS | ALLOWED
+[Tue May  5 22:53:49 2026] Thread-18 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 22:53:49 2026] Thread-17 test2(user) | www.googletagmanager.com | HTTPS | ALLOWED
+[Tue May  5 22:53:49 2026] Thread-18 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 22:53:49 2026] Thread-17 test2(user) | www.googletagmanager.com | HTTPS | ALLOWED
+[Tue May  5 22:54:00 2026] Thread-2 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:00 2026] Thread-1 test2(user) | beacons.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 22:59:00 2026] Thread-2 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:01 2026] Thread-3 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:02 2026] Thread-4 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:02 2026] Thread-5 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:02 2026] Thread-7 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:02 2026] Thread-8 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 22:59:03 2026] Thread-9 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:03 2026] Thread-10 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:04 2026] Thread-11 test2(user) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:59:04 2026] Thread-12 test2(user) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:59:05 2026] Thread-6 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:05 2026] Thread-13 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 22:59:05 2026] Thread-14 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:05 2026] Thread-15 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:06 2026] Thread-16 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:06 2026] Thread-17 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:06 2026] Thread-18 test2(user) | www.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:59:06 2026] Thread-19 test2(user) | ssl.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 22:59:07 2026] Thread-9 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 22:59:17 2026] Thread-11 test2(user) | clients4.google.com | HTTPS | ALLOWED
+[Tue May  5 23:01:02 2026] Thread-16 test2(user) | mtalk.google.com | HTTPS | ALLOWED
+[Tue May  5 23:02:08 2026] Thread-5 test2(user) | beacons3.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 23:02:08 2026] Thread-20 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 23:02:25 2026] Thread-8 test2(user) | clients2.google.com | HTTPS | ALLOWED
+[Tue May  5 23:03:56 2026] Thread-13 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 23:03:57 2026] Thread-14 test2(user) | e2c56.gcp.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 23:04:04 2026] Thread-19 test2(user) | beacons3.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 23:04:04 2026] Thread-18 test2(user) | e2c78.gcp.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 23:05:05 2026] Thread-1 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:14 2026] Thread-5 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[Tue May  5 23:05:16 2026] Thread-6 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:29 2026] Thread-7 test2(user) | clients4.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:32 2026] Thread-8 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:34 2026] Thread-9 test2(user) | www.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:34 2026] Thread-10 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:34 2026] Thread-11 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:34 2026] Thread-12 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 23:05:35 2026] Thread-13 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:36 2026] Thread-14 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:37 2026] Thread-15 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[Tue May  5 23:05:37 2026] Thread-16 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:38 2026] Thread-19 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:38 2026] Thread-20 test2(user) | www.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 23:05:38 2026] Thread-4 test2(user) | ssl.gstatic.com | HTTPS | ALLOWED
+[Tue May  5 23:05:39 2026] Thread-2 test2(user) | play.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:42 2026] Thread-1 test2(user) | mtalk.google.com | HTTPS | ALLOWED
+[Tue May  5 23:05:44 2026] Thread-3 test2(user) | neverssl.com | HTTP | ALLOWED
+[Tue May  5 23:05:44 2026] Thread-3 test2(user) | neverssl.com | HTTP | CACHE_STORED
+[Tue May  5 23:05:44 2026] Thread-17 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:05:44 2026] Thread-6 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:05:45 2026] Thread-18 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:05:45 2026] Thread-3 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:05:45 2026] Thread-6 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:05:50 2026] Thread-18 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:05:50 2026] Thread-17 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:05:50 2026] Thread-3 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:06:20 2026] Thread-6 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:06:20 2026] Thread-18 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:06:20 2026] Thread-17 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:07:20 2026] Thread-3 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:07:20 2026] Thread-6 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:07:20 2026] Thread-18 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[Tue May  5 23:10:09 2026] Thread-17 test2(user) | www.google.com | HTTPS | ALLOWED
+[23:49:52] Thread-1 test2(user) | www.google.com | HTTPS | ALLOWED
+[23:49:54] Thread-3 test2(user) | oauthaccountmanager.googleapis.com | HTTPS | ALLOWED
+[23:50:06] Thread-6 test2(user) | www.google.com | HTTPS | ALLOWED
+[23:50:07] Thread-7 test2(user) | clients4.google.com | HTTPS | ALLOWED
+[23:52:49] Thread-1 test2(user) | www.google.com | HTTPS | ALLOWED
+[23:52:50] Thread-2 test2(user) | www.google.com | HTTPS | ALLOWED
+[23:52:51] Thread-3 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[23:52:51] Thread-4 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[23:52:51] Thread-5 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[23:52:51] Thread-6 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[23:52:51] Thread-7 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[23:52:52] Thread-8 test2(user) | play.google.com | HTTPS | ALLOWED
+[23:52:53] Thread-9 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[23:52:53] Thread-10 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[23:52:53] Thread-11 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[23:52:53] Thread-12 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[23:52:54] Thread-13 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[23:52:54] Thread-14 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[23:52:55] Thread-17 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[23:52:55] Thread-18 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[23:52:55] Thread-19 test2(user) | ssl.gstatic.com | HTTPS | ALLOWED
+[23:52:55] Thread-20 test2(user) | www.gstatic.com | HTTPS | ALLOWED
+[23:53:00] Thread-16 test2(user) | neverssl.com | HTTP | ALLOWED
+[23:53:00] Thread-16 test2(user) | neverssl.com | HTTP | CACHE_STORED
+[23:53:00] Thread-3 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:53:00] Thread-4 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:53:00] Thread-9 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:53:01] Thread-13 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:53:01] Thread-15 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:53:01] Thread-17 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:53:06] Thread-16 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:53:06] Thread-3 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:53:06] Thread-4 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:53:06] Thread-9 test2(user) | clients4.google.com | HTTPS | ALLOWED
+[23:53:36] Thread-13 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:53:36] Thread-15 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:53:36] Thread-17 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:54:36] Thread-16 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:54:36] Thread-3 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:54:36] Thread-4 cached_user(user) | neverssl.com | HTTP | CACHE HIT
+[23:54:36] Thread-13 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[23:54:37] Thread-15 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:02:10] Thread-1 test2(user) | www.google.com | HTTPS | ALLOWED
+[00:02:12] Thread-2 test2(user) | www.google.com | HTTPS | ALLOWED
+[00:02:12] Thread-3 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[00:02:12] Thread-4 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:02:12] Thread-5 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[00:02:12] Thread-6 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:02:12] Thread-7 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[00:02:13] Thread-8 test2(user) | play.google.com | HTTPS | ALLOWED
+[00:02:13] Thread-9 test2(user) | play.google.com | HTTPS | ALLOWED
+[00:02:14] Thread-10 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[00:02:14] Thread-11 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:02:14] Thread-12 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[00:02:15] Thread-13 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[00:02:16] Thread-15 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[00:02:16] Thread-16 test2(user) | mtalk.google.com | HTTPS | ALLOWED
+[00:02:17] Thread-17 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[00:02:17] Thread-19 test2(user) | ssl.gstatic.com | HTTPS | ALLOWED
+[00:02:17] Thread-18 test2(user) | www.gstatic.com | HTTPS | ALLOWED
+[00:02:33] Thread-8 test2(user) | clients4.google.com | HTTPS | ALLOWED
+[00:03:19] Thread-10 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:03:19] Thread-15 test2(user) | google.com | HTTPS | ALLOWED
+[00:03:19] Thread-14 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:03:19] Thread-18 test2(user) | e2c6.gcp.gvt2.com | HTTPS | ALLOWED
+[00:04:31] Thread-19 test2(user) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:17:06] Thread-1 test2(user) | example.com | HTTP | ALLOWED
+[00:17:06] Thread-1 test2(user) | example.com | HTTP | CACHE STORED
+[00:17:06] Thread-2 test2(user) | www.google.com | HTTPS | ALLOWED
+[00:17:13] Thread-3 test2(user) | www.google.com | HTTPS | ALLOWED
+[00:17:14] Thread-4 test2(user) | lh3.google.com | HTTPS | ALLOWED
+[00:17:14] Thread-5 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:17:14] Thread-6 test2(user) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:17:14] Thread-7 test2(user) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[00:17:15] Thread-8 test2(user) | play.google.com | HTTPS | ALLOWED
+[00:17:18] Thread-9 test2(user) | ogs.google.com | HTTPS | ALLOWED
+[00:17:18] Thread-10 test2(user) | www.gstatic.com | HTTPS | ALLOWED
+[00:17:18] Thread-11 test2(user) | ssl.gstatic.com | HTTPS | ALLOWED
+[00:17:22] Thread-12 test2(user) | example.com | HTTPS | ALLOWED
+[00:17:22] Thread-13 test2(user) | example.com | HTTP | CACHE HIT
+[00:17:28] Thread-14 test2(user) | example.com | HTTP | ALLOWED
+[00:17:28] Thread-14 test2(user) | example.com | HTTP | CACHE STORED
+[00:17:37] Thread-17 test2(user) | clients4.google.com | HTTPS | ALLOWED
+[00:17:37] Thread-18 test2(user) | clients4.google.com | HTTPS | ALLOWED
+[00:26:40] Thread-1 test2(user) | httpbin.org | HTTP | ALLOWED
+[00:26:40] Thread-1 test2(user) | httpbin.org | HTTP | CACHE STORED
+[00:27:55] Thread-2 test2(user) | www.youtube.com | HTTP | BLOCKED
+[00:28:28] Thread-3 test2(user) | mtalk.google.com | HTTPS | ALLOWED
+[00:28:30] Thread-4 test2(user) | httpbin.org | HTTP | CACHE HIT
+[00:30:03] Thread-1 test2(user) | beacons.gvt2.com | HTTPS | ALLOWED
+[00:30:03] Thread-2 test2(user) | beacons.gvt2.com | HTTPS | ALLOWED
+[00:30:06] Thread-3 test2(user) | www.youtube.com | HTTP | BLOCKED
+[00:31:20] Thread-16 admin(admin) | optimizationguide-pa.googleapis.com | HTTPS | ALLOWED
+[00:31:20] Thread-18 admin(admin) | fonts.gstatic.com | HTTPS | ALLOWED
+[00:31:20] Thread-17 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:31:20] Thread-19 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:31:20] Thread-20 admin(admin) | lh3.google.com | HTTPS | ALLOWED
+[00:31:20] Thread-1 admin(admin) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[00:31:21] Thread-2 admin(admin) | www.googleadservices.com | HTTPS | ALLOWED
+[00:31:21] Thread-3 admin(admin) | play.google.com | HTTPS | ALLOWED
+[00:31:21] Thread-4 admin(admin) | www.googletagmanager.com | HTTPS | ALLOWED
+[00:31:21] Thread-5 admin(admin) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:31:21] Thread-6 admin(admin) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[00:31:21] Thread-7 admin(admin) | www.youtube.com | HTTPS | ALLOWED
+[00:31:21] Thread-8 admin(admin) | accounts.google.com | HTTPS | ALLOWED
+[00:31:21] Thread-9 admin(admin) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:31:21] Thread-10 admin(admin) | www.youtube.com | HTTPS | ALLOWED
+[00:31:21] Thread-11 admin(admin) | fonts.gstatic.com | HTTPS | ALLOWED
+[00:31:21] Thread-12 admin(admin) | i.ytimg.com | HTTPS | ALLOWED
+[00:31:22] Thread-13 admin(admin) | play.google.com | HTTPS | ALLOWED
+[00:31:22] Thread-14 admin(admin) | googleads.g.doubleclick.net | HTTPS | ALLOWED
+[00:31:22] Thread-15 admin(admin) | static.doubleclick.net | HTTPS | ALLOWED
+[00:32:06] Thread-12 admin(admin) | www.youtube.com | HTTPS | ALLOWED
+[00:32:06] Thread-18 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:32:06] Thread-18 admin(admin) | www.youtube.com | HTTPS | ALLOWED
+[00:32:06] Thread-12 admin(admin) | ogs.google.com | HTTPS | ALLOWED
+[00:32:06] Thread-18 admin(admin) | oauthaccountmanager.googleapis.com | HTTPS | ALLOWED
+[00:32:06] Thread-19 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:32:06] Thread-12 admin(admin) | lh3.google.com | HTTPS | ALLOWED
+[00:32:06] Thread-18 admin(admin) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:32:08] Thread-18 admin(admin) | play.google.com | HTTPS | ALLOWED
+[00:32:08] Thread-6 admin(admin) | android.clients.google.com | HTTPS | ALLOWED
+[00:32:08] Thread-7 admin(admin) | www.youtube.com | HTTPS | ALLOWED
+[00:32:08] Thread-10 admin(admin) | www.youtube.com | HTTPS | ALLOWED
+[00:32:08] Thread-8 admin(admin) | mtalk.google.com | HTTPS | ALLOWED
+[00:32:08] Thread-13 admin(admin) | lh3.google.com | HTTPS | ALLOWED
+[00:32:08] Thread-20 admin(admin) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:32:08] Thread-4 admin(admin) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[00:32:08] Thread-11 admin(admin) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[00:32:08] Thread-9 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:32:08] Thread-15 admin(admin) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[00:32:08] Thread-2 admin(admin) | play.google.com | HTTPS | ALLOWED
+[00:32:08] Thread-1 admin(admin) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[00:32:08] Thread-14 admin(admin) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[00:32:08] Thread-5 admin(admin) | www.facebook.com | HTTPS | ALLOWED
+[00:32:08] Thread-19 admin(admin) | z-m-static.xx.fbcdn.net | HTTPS | ALLOWED
+[00:32:09] Thread-12 admin(admin) | i.ytimg.com | HTTPS | ALLOWED
+[00:32:09] Thread-20 admin(admin) | static.xx.fbcdn.net | HTTPS | ALLOWED
+[00:32:09] Thread-2 admin(admin) | fonts.googleapis.com | HTTPS | ALLOWED
+[00:32:10] Thread-4 admin(admin) | fonts.gstatic.com | HTTPS | ALLOWED
+[00:32:10] Thread-11 admin(admin) | content-autofill.googleapis.com | HTTPS | ALLOWED
+[00:32:10] Thread-14 admin(admin) | static.xx.fbcdn.net | HTTPS | ALLOWED
+[00:32:13] Thread-13 admin(admin) | www.instagram.com | HTTPS | ALLOWED
+[00:32:13] Thread-1 admin(admin) | accounts.meta.com | HTTPS | ALLOWED
+[00:32:13] Thread-9 admin(admin) | oauthaccountmanager.googleapis.com | HTTPS | ALLOWED
+[00:32:13] Thread-10 admin(admin) | googleads.g.doubleclick.net | HTTPS | ALLOWED
+[00:32:13] Thread-19 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:32:13] Thread-12 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:32:13] Thread-2 admin(admin) | fonts.gstatic.com | HTTPS | ALLOWED
+[00:32:13] Thread-20 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:32:13] Thread-11 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:32:13] Thread-15 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:32:13] Thread-14 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:32:13] Thread-17 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:32:13] Thread-18 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:32:13] Thread-7 admin(admin) | clients4.google.com | HTTPS | ALLOWED
+[00:32:13] Thread-5 admin(admin) | fonts.gstatic.com | HTTPS | ALLOWED
+[00:32:13] Thread-13 admin(admin) | googleads.g.doubleclick.net | HTTPS | ALLOWED
+[00:32:13] Thread-3 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:32:13] Thread-6 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:32:13] Thread-16 admin(admin) | www.google.co.in | HTTPS | ALLOWED
+[00:32:13] Thread-9 admin(admin) | www.youtube.com | HTTPS | ALLOWED
+[00:32:13] Thread-12 admin(admin) | yt3.ggpht.com | HTTPS | ALLOWED
+[00:32:13] Thread-20 admin(admin) | i.ytimg.com | HTTPS | ALLOWED
+[00:32:13] Thread-14 admin(admin) | yt3.ggpht.com | HTTPS | ALLOWED
+[00:32:13] Thread-3 admin(admin) | yt3.ggpht.com | HTTPS | ALLOWED
+[00:32:13] Thread-15 admin(admin) | yt3.ggpht.com | HTTPS | ALLOWED
+[00:32:13] Thread-17 admin(admin) | fonts.googleapis.com | HTTPS | ALLOWED
+[00:32:13] Thread-6 admin(admin) | content-autofill.googleapis.com | HTTPS | ALLOWED
+[00:32:14] Thread-12 admin(admin) | youtube.com | HTTPS | ALLOWED
+[00:32:14] Thread-15 admin(admin) | accounts.youtube.com | HTTPS | ALLOWED
+[00:32:14] Thread-14 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:33:10] Thread-1 admin(admin) | clients4.google.com | HTTPS | ALLOWED
+[00:33:11] Thread-2 admin(admin) | rr2---sn-cvh7kn6d.googlevideo.com | HTTPS | ALLOWED
+[00:33:11] Thread-3 admin(admin) | www.youtube.com | HTTPS | ALLOWED
+[00:33:11] Thread-5 admin(admin) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:33:11] Thread-4 admin(admin) | beacons3.gvt2.com | HTTPS | ALLOWED
+[00:33:11] Thread-6 admin(admin) | rr3---sn-gwpa-qxaek.googlevideo.com | HTTPS | ALLOWED
+[00:33:16] Thread-7 test2(user) | www.youtube.com | HTTP | BLOCKED
+[00:33:21] Thread-8 admin(admin) | www.facebook.com | HTTPS | ALLOWED
+[00:33:21] Thread-9 admin(admin) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:33:21] Thread-10 admin(admin) | www.google.co.in | HTTPS | ALLOWED
+[00:33:21] Thread-11 admin(admin) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:33:21] Thread-12 admin(admin) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:33:21] Thread-13 admin(admin) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:33:21] Thread-14 admin(admin) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:33:21] Thread-15 admin(admin) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:33:21] Thread-16 admin(admin) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:33:21] Thread-17 admin(admin) | beacons.gcp.gvt2.com | HTTPS | ALLOWED
+[00:33:21] Thread-18 admin(admin) | e2c16.gcp.gvt2.com | HTTPS | ALLOWED
+[00:33:21] Thread-20 admin(admin) | e2c58.gcp.gvt2.com | HTTPS | ALLOWED
+[00:33:31] Thread-19 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:33:32] Thread-7 admin(admin) | fonts.gstatic.com | HTTPS | ALLOWED
+[00:33:33] Thread-11 admin(admin) | i4.ytimg.com | HTTPS | ALLOWED
+[00:33:34] Thread-12 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:33:35] Thread-13 admin(admin) | lh3.google.com | HTTPS | ALLOWED
+[00:33:35] Thread-17 admin(admin) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:33:35] Thread-15 admin(admin) | lh3.google.com | HTTPS | ALLOWED
+[00:33:35] Thread-16 admin(admin) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[00:33:36] Thread-18 admin(admin) | play.google.com | HTTPS | ALLOWED
+[00:33:36] Thread-13 admin(admin) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[00:33:38] Thread-16 admin(admin) | lh3.google.com | HTTPS | ALLOWED
+[00:33:38] Thread-16 admin(admin) | optimizationguide-pa.googleapis.com | HTTPS | ALLOWED
+[00:33:48] Thread-20 admin(admin) | www.googleadservices.com | HTTPS | ALLOWED
+[00:44:15] Thread-1 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:18] Thread-2 admin(admin) | www.twitch.tv | HTTPS | ALLOWED
+[00:44:18] Thread-3 admin(admin) | www.twitch.tv | HTTPS | ALLOWED
+[00:44:18] Thread-5 admin(admin) | assets.twitch.tv | HTTPS | ALLOWED
+[00:44:18] Thread-4 admin(admin) | assets.twitch.tv | HTTPS | ALLOWED
+[00:44:19] Thread-6 admin(admin) | gql.twitch.tv | HTTPS | ALLOWED
+[00:44:19] Thread-7 admin(admin) | usher.ttvnw.net | HTTPS | ALLOWED
+[00:44:19] Thread-8 admin(admin) | spade.twitch.tv | HTTPS | ALLOWED
+[00:44:19] Thread-9 admin(admin) | k.twitchcdn.net | HTTPS | ALLOWED
+[00:44:20] Thread-10 admin(admin) | irc-ws.chat.twitch.tv | HTTPS | ALLOWED
+[00:44:20] Thread-11 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:44:20] Thread-12 admin(admin) | content-autofill.googleapis.com | HTTPS | ALLOWED
+[00:44:20] Thread-13 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:20] Thread-14 admin(admin) | lh3.google.com | HTTPS | ALLOWED
+[00:44:20] Thread-15 admin(admin) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:44:20] Thread-16 admin(admin) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:44:20] Thread-17 admin(admin) | edge.ads.twitch.tv | HTTPS | ALLOWED
+[00:44:20] Thread-18 admin(admin) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[00:44:20] Thread-19 admin(admin) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[00:44:21] Thread-20 admin(admin) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[00:44:21] Thread-3 admin(admin) | static-cdn.jtvnw.net | HTTPS | ALLOWED
+[00:44:21] Thread-15 admin(admin) | static-cdn.jtvnw.net | HTTPS | ALLOWED
+[00:44:21] Thread-18 admin(admin) | encrypted-tbn0.gstatic.com | HTTPS | ALLOWED
+[00:44:21] Thread-20 admin(admin) | static-cdn.jtvnw.net | HTTPS | ALLOWED
+[00:44:21] Thread-20 admin(admin) | www.youtube.com | HTTPS | ALLOWED
+[00:44:21] Thread-15 admin(admin) | fonts.googleapis.com | HTTPS | ALLOWED
+[00:44:23] Thread-15 admin(admin) | fonts.gstatic.com | HTTPS | ALLOWED
+[00:44:23] Thread-9 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:44:23] Thread-17 admin(admin) | play.google.com | HTTPS | ALLOWED
+[00:44:23] Thread-18 admin(admin) | player.stats.live-video.net | HTTPS | ALLOWED
+[00:44:23] Thread-8 admin(admin) | aps32.playlist.ttvnw.net | HTTPS | ALLOWED
+[00:44:23] Thread-7 admin(admin) | player.stats.live-video.net | HTTPS | ALLOWED
+[00:44:23] Thread-11 admin(admin) | video-edge-47127a.sjc05.hls.live-video.net | HTTPS | ALLOWED
+[00:44:23] Thread-2 admin(admin) | i.ytimg.com | HTTPS | ALLOWED
+[00:44:23] Thread-12 admin(admin) | video-edge-47127a.sjc05.hls.live-video.net | HTTPS | ALLOWED
+[00:44:23] Thread-4 admin(admin) | video-edge-47127a.sjc05.hls.live-video.net | HTTPS | ALLOWED
+[00:44:23] Thread-3 admin(admin) | fonts.gstatic.com | HTTPS | ALLOWED
+[00:44:23] Thread-13 admin(admin) | googleads.g.doubleclick.net | HTTPS | ALLOWED
+[00:44:23] Thread-5 admin(admin) | gql.twitch.tv | HTTPS | ALLOWED
+[00:44:23] Thread-19 admin(admin) | passport.twitch.tv | HTTPS | ALLOWED
+[00:44:23] Thread-14 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:23] Thread-1 admin(admin) | sb.scorecardresearch.com | HTTPS | ALLOWED
+[00:44:23] Thread-16 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:23] Thread-15 admin(admin) | www.google.co.in | HTTPS | ALLOWED
+[00:44:23] Thread-15 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:44:23] Thread-3 admin(admin) | yt3.ggpht.com | HTTPS | ALLOWED
+[00:44:23] Thread-18 admin(admin) | ad.doubleclick.net | HTTPS | ALLOWED
+[00:44:23] Thread-11 admin(admin) | accounts.youtube.com | HTTPS | ALLOWED
+[00:44:23] Thread-4 admin(admin) | hermes.twitch.tv | HTTPS | ALLOWED
+[00:44:24] Thread-15 admin(admin) | aax-eu.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:24] Thread-11 admin(admin) | static.doubleclick.net | HTTPS | ALLOWED
+[00:44:25] Thread-15 admin(admin) | yt3.ggpht.com | HTTPS | ALLOWED
+[00:44:25] Thread-17 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:44:25] Thread-14 admin(admin) | yt3.ggpht.com | HTTPS | ALLOWED
+[00:44:25] Thread-9 admin(admin) | yt3.ggpht.com | HTTPS | ALLOWED
+[00:44:25] Thread-1 admin(admin) | yt3.ggpht.com | HTTPS | ALLOWED
+[00:44:25] Thread-6 admin(admin) | www.google.co.in | HTTPS | ALLOWED
+[00:44:25] Thread-8 admin(admin) | yt3.ggpht.com | HTTPS | ALLOWED
+[00:44:25] Thread-12 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:25] Thread-20 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:44:25] Thread-13 admin(admin) | rr3---sn-gwpa-qxae7.googlevideo.com | HTTPS | ALLOWED
+[00:44:25] Thread-18 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:25] Thread-3 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:25] Thread-16 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:44:25] Thread-2 admin(admin) | accounts.youtube.com | HTTPS | ALLOWED
+[00:44:25] Thread-7 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:25] Thread-11 admin(admin) | rr3---sn-gwpa-qxae7.googlevideo.com | HTTPS | ALLOWED
+[00:44:25] Thread-19 admin(admin) | optimizationguide-pa.googleapis.com | HTTPS | ALLOWED
+[00:44:25] Thread-17 admin(admin) | fonts.gstatic.com | HTTPS | ALLOWED
+[00:44:25] Thread-3 admin(admin) | prod.ivs-device-config.live-video.net | HTTPS | ALLOWED
+[00:44:25] Thread-7 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:25] Thread-15 admin(admin) | sync-tm.everesttech.net | HTTPS | ALLOWED
+[00:44:25] Thread-14 admin(admin) | sync.1rx.io | HTTPS | ALLOWED
+[00:44:25] Thread-9 admin(admin) | rtb.gumgum.com | HTTPS | ALLOWED
+[00:44:25] Thread-1 admin(admin) | ssum-sec.casalemedia.com | HTTPS | ALLOWED
+[00:44:25] Thread-8 admin(admin) | ms-cookie-sync.presage.io | HTTPS | ALLOWED
+[00:44:26] Thread-7 admin(admin) | u.openx.net | HTTPS | ALLOWED
+[00:44:26] Thread-17 admin(admin) | ssbsync-us.smartadserver.com | HTTPS | ALLOWED
+[00:44:26] Thread-19 admin(admin) | sync.inmobi.com | HTTPS | ALLOWED
+[00:44:26] Thread-12 admin(admin) | amazon-tam-match.dotomi.com | HTTPS | ALLOWED
+[00:44:26] Thread-6 admin(admin) | match.sharethrough.com | HTTPS | ALLOWED
+[00:44:26] Thread-18 admin(admin) | s.ad.smaato.net | HTTPS | ALLOWED
+[00:44:26] Thread-16 admin(admin) | ads.pubmatic.com | HTTPS | ALLOWED
+[00:44:26] Thread-20 admin(admin) | s.seedtag.com | HTTPS | ALLOWED
+[00:44:26] Thread-13 admin(admin) | ups.analytics.yahoo.com | HTTPS | ALLOWED
+[00:44:26] Thread-5 admin(admin) | crb.kargo.com | HTTPS | ALLOWED
+[00:44:26] Thread-11 admin(admin) | sync.1rx.io | HTTPS | ALLOWED
+[00:44:26] Thread-2 admin(admin) | ap.lijit.com | HTTPS | ALLOWED
+[00:44:26] Thread-3 admin(admin) | eb2.3lift.com | HTTPS | ALLOWED
+[00:44:27] Thread-7 admin(admin) | ib.adnxs.com | HTTPS | ALLOWED
+[00:44:27] Thread-11 admin(admin) | lh3.google.com | HTTPS | ALLOWED
+[00:44:27] Thread-15 admin(admin) | www.googleadservices.com | HTTPS | ALLOWED
+[00:44:27] Thread-1 admin(admin) | www.googletagmanager.com | HTTPS | ALLOWED
+[00:44:27] Thread-14 admin(admin) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:44:27] Thread-16 admin(admin) | play.google.com | HTTPS | ALLOWED
+[00:44:27] Thread-9 admin(admin) | passport.twitch.tv | HTTPS | ALLOWED
+[00:44:27] Thread-20 admin(admin) | optimizationguide-pa.googleapis.com | HTTPS | ALLOWED
+[00:44:27] Thread-8 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:27] Thread-14 admin(admin) | www.googletagmanager.com | HTTPS | ALLOWED
+[00:44:27] Thread-16 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:27] Thread-20 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:27] Thread-18 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:27] Thread-15 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:27] Thread-14 admin(admin) | www.facebook.com | HTTPS | ALLOWED
+[00:44:27] Thread-6 admin(admin) | u.openx.net | HTTPS | ALLOWED
+[00:44:27] Thread-12 admin(admin) | gql.twitch.tv | HTTPS | ALLOWED
+[00:44:27] Thread-11 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:27] Thread-13 admin(admin) | ssum-sec.casalemedia.com | HTTPS | ALLOWED
+[00:44:27] Thread-5 admin(admin) | sync.1rx.io | HTTPS | ALLOWED
+[00:44:27] Thread-16 admin(admin) | ut.pubmatic.com | HTTPS | ALLOWED
+[00:44:27] Thread-20 admin(admin) | ads.pubmatic.com | HTTPS | ALLOWED
+[00:44:27] Thread-18 admin(admin) | c1.adform.net | HTTPS | ALLOWED
+[00:44:27] Thread-1 admin(admin) | cm.g.doubleclick.net | HTTPS | ALLOWED
+[00:44:27] Thread-8 admin(admin) | creativecdn.com | HTTPS | ALLOWED
+[00:44:27] Thread-3 admin(admin) | creativecdn.com | HTTPS | ALLOWED
+[00:44:27] Thread-15 admin(admin) | match.adsrvr.org | HTTPS | ALLOWED
+[00:44:27] Thread-11 admin(admin) | secure-assets.rubiconproject.com | HTTPS | ALLOWED
+[00:44:27] Thread-9 admin(admin) | secure-assets.rubiconproject.com | HTTPS | ALLOWED
+[00:44:28] Thread-6 admin(admin) | ssbsync.smartadserver.com | HTTPS | ALLOWED
+[00:44:28] Thread-19 admin(admin) | tg.socdm.com | HTTPS | ALLOWED
+[00:44:28] Thread-20 admin(admin) | www.youtube.com | HTTPS | ALLOWED
+[00:44:28] Thread-1 admin(admin) | sync.1rx.io | HTTPS | ALLOWED
+[00:44:28] Thread-11 admin(admin) | cs-server-s2s.yellowblue.io | HTTPS | ALLOWED
+[00:44:28] Thread-9 admin(admin) | sync.inmobi.com | HTTPS | ALLOWED
+[00:44:28] Thread-2 admin(admin) | match.adsrvr.org | HTTPS | ALLOWED
+[00:44:28] Thread-17 admin(admin) | amazon-tam-match.dotomi.com | HTTPS | ALLOWED
+[00:44:28] Thread-5 admin(admin) | lh3.googleusercontent.com | HTTPS | ALLOWED
+[00:44:28] Thread-2 admin(admin) | ups.analytics.yahoo.com | HTTPS | ALLOWED
+[00:44:28] Thread-1 admin(admin) | www.youtube.com | HTTPS | ALLOWED
+[00:44:28] Thread-15 admin(admin) | play.google.com | HTTPS | ALLOWED
+[00:44:28] Thread-1 admin(admin) | play.google.com | HTTPS | ALLOWED
+[00:44:28] Thread-13 admin(admin) | pixel.rubiconproject.com | HTTPS | ALLOWED
+[00:44:28] Thread-8 admin(admin) | eb2.3lift.com | HTTPS | ALLOWED
+[00:44:28] Thread-5 admin(admin) | accounts.youtube.com | HTTPS | ALLOWED
+[00:44:28] Thread-20 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:28] Thread-9 admin(admin) | sync.inmobi.com | HTTPS | ALLOWED
+[00:44:28] Thread-1 admin(admin) | ut.pubmatic.com | HTTPS | ALLOWED
+[00:44:28] Thread-14 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:28] Thread-16 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:28] Thread-18 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:28] Thread-5 admin(admin) | eus.rubiconproject.com | HTTPS | ALLOWED
+[00:44:28] Thread-17 admin(admin) | ce.lijit.com | HTTPS | ALLOWED
+[00:44:28] Thread-5 admin(admin) | eus.rubiconproject.com | HTTPS | ALLOWED
+[00:44:28] Thread-1 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:29] Thread-3 admin(admin) | ad.turn.com | HTTPS | ALLOWED
+[00:44:29] Thread-5 admin(admin) | ad.turn.com | HTTPS | ALLOWED
+[00:44:29] Thread-2 admin(admin) | match.adsrvr.org | HTTPS | ALLOWED
+[00:44:29] Thread-6 admin(admin) | static.xx.fbcdn.net | HTTPS | ALLOWED
+[00:44:29] Thread-8 admin(admin) | sync.inmobi.com | HTTPS | ALLOWED
+[00:44:29] Thread-13 admin(admin) | secure.adnxs.com | HTTPS | ALLOWED
+[00:44:29] Thread-19 admin(admin) | us-u.openx.net | HTTPS | ALLOWED
+[00:44:29] Thread-6 admin(admin) | x.bidswitch.net | HTTPS | ALLOWED
+[00:44:29] Thread-15 admin(admin) | x.bidswitch.net | HTTPS | ALLOWED
+[00:44:29] Thread-3 admin(admin) | dsum-sec.casalemedia.com | HTTPS | ALLOWED
+[00:44:29] Thread-2 admin(admin) | c1.adform.net | HTTPS | ALLOWED
+[00:44:29] Thread-8 admin(admin) | match.adsrvr.org | HTTPS | ALLOWED
+[00:44:29] Thread-8 admin(admin) | match.adsrvr.org | HTTPS | ALLOWED
+[00:44:29] Thread-12 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:29] Thread-8 admin(admin) | eus.rubiconproject.com | HTTPS | ALLOWED
+[00:44:29] Thread-5 admin(admin) | image6.pubmatic.com | HTTPS | ALLOWED
+[00:44:29] Thread-19 admin(admin) | creativecdn.com | HTTPS | ALLOWED
+[00:44:29] Thread-8 admin(admin) | sync-tm.everesttech.net | HTTPS | ALLOWED
+[00:44:29] Thread-8 admin(admin) | match.sharethrough.com | HTTPS | ALLOWED
+[00:44:29] Thread-11 admin(admin) | ms-cookie-sync.presage.io | HTTPS | ALLOWED
+[00:44:29] Thread-3 admin(admin) | s.seedtag.com | HTTPS | ALLOWED
+[00:44:29] Thread-6 admin(admin) | usersync.gumgum.com | HTTPS | ALLOWED
+[00:44:29] Thread-2 admin(admin) | www.googleadservices.com | HTTPS | ALLOWED
+[00:44:29] Thread-5 admin(admin) | creativecdn.com | HTTPS | ALLOWED
+[00:44:29] Thread-3 admin(admin) | static.xx.fbcdn.net | HTTPS | ALLOWED
+[00:44:30] Thread-9 admin(admin) | www.googletagmanager.com | HTTPS | ALLOWED
+[00:44:30] Thread-8 admin(admin) | www.googletagmanager.com | HTTPS | ALLOWED
+[00:44:30] Thread-2 admin(admin) | usersync.gumgum.com | HTTPS | ALLOWED
+[00:44:30] Thread-20 admin(admin) | dsum-sec.casalemedia.com | HTTPS | ALLOWED
+[00:44:30] Thread-14 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:30] Thread-3 admin(admin) | sync.1rx.io | HTTPS | ALLOWED
+[00:44:30] Thread-20 admin(admin) | gql.twitch.tv | HTTPS | ALLOWED
+[00:44:30] Thread-14 admin(admin) | static.xx.fbcdn.net | HTTPS | ALLOWED
+[00:44:30] Thread-8 admin(admin) | static.xx.fbcdn.net | HTTPS | ALLOWED
+[00:44:30] Thread-5 admin(admin) | static.xx.fbcdn.net | HTTPS | ALLOWED
+[00:44:30] Thread-2 admin(admin) | token.rubiconproject.com | HTTPS | ALLOWED
+[00:44:30] Thread-1 admin(admin) | cm.g.doubleclick.net | HTTPS | ALLOWED
+[00:44:30] Thread-18 admin(admin) | sync.1rx.io | HTTPS | ALLOWED
+[00:44:30] Thread-19 admin(admin) | s.ad.smaato.net | HTTPS | ALLOWED
+[00:44:30] Thread-14 admin(admin) | usersync.gumgum.com | HTTPS | ALLOWED
+[00:44:30] Thread-16 admin(admin) | c1.adform.net | HTTPS | ALLOWED
+[00:44:30] Thread-8 admin(admin) | um.simpli.fi | HTTPS | ALLOWED
+[00:44:30] Thread-9 admin(admin) | b1sync.outbrain.com | HTTPS | ALLOWED
+[00:44:30] Thread-6 admin(admin) | dpm.demdex.net | HTTPS | ALLOWED
+[00:44:30] Thread-17 admin(admin) | idsync.rlcdn.com | HTTPS | ALLOWED
+[00:44:30] Thread-20 admin(admin) | sync.inmobi.com | HTTPS | ALLOWED
+[00:44:30] Thread-11 admin(admin) | rtb-csync.smartadserver.com | HTTPS | ALLOWED
+[00:44:30] Thread-15 admin(admin) | ups.analytics.yahoo.com | HTTPS | ALLOWED
+[00:44:30] Thread-5 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:30] Thread-5 admin(admin) | cm.g.doubleclick.net | HTTPS | ALLOWED
+[00:44:30] Thread-14 admin(admin) | sid.storygize.net | HTTPS | ALLOWED
+[00:44:30] Thread-18 admin(admin) | www.gstatic.com | HTTPS | ALLOWED
+[00:44:30] Thread-5 admin(admin) | www.facebook.com | HTTPS | ALLOWED
+[00:44:30] Thread-1 admin(admin) | www.instagram.com | HTTPS | ALLOWED
+[00:44:30] Thread-3 admin(admin) | cms.quantserve.com | HTTPS | ALLOWED
+[00:44:30] Thread-12 admin(admin) | static.xx.fbcdn.net | HTTPS | ALLOWED
+[00:44:30] Thread-15 admin(admin) | accounts.meta.com | HTTPS | ALLOWED
+[00:44:30] Thread-19 admin(admin) | cr-p3.ladsp.com | HTTPS | ALLOWED
+[00:44:30] Thread-18 admin(admin) | match.adsrvr.org | HTTPS | ALLOWED
+[00:44:30] Thread-6 admin(admin) | cs.media.net | HTTPS | ALLOWED
+[00:44:31] Thread-17 admin(admin) | ups.analytics.yahoo.com | HTTPS | ALLOWED
+[00:44:31] Thread-17 admin(admin) | cs.krushmedia.com | HTTPS | ALLOWED
+[00:44:31] Thread-8 admin(admin) | sync.inmobi.com | HTTPS | ALLOWED
+[00:44:31] Thread-16 admin(admin) | gql.twitch.tv | HTTPS | ALLOWED
+[00:44:31] Thread-11 admin(admin) | cm.g.doubleclick.net | HTTPS | ALLOWED
+[00:44:31] Thread-5 admin(admin) | rtb-csync.smartadserver.com | HTTPS | ALLOWED
+[00:44:31] Thread-1 admin(admin) | pixel-sync.sitescout.com | HTTPS | ALLOWED
+[00:44:31] Thread-11 admin(admin) | rtb-csync.smartadserver.com | HTTPS | ALLOWED
+[00:44:31] Thread-5 admin(admin) | dsum-sec.casalemedia.com | HTTPS | ALLOWED
+[00:44:31] Thread-2 admin(admin) | match.adsrvr.org | HTTPS | ALLOWED
+[00:44:31] Thread-12 admin(admin) | sync.targeting.unrulymedia.com | HTTPS | ALLOWED
+[00:44:31] Thread-18 admin(admin) | sync.targeting.unrulymedia.com | HTTPS | ALLOWED
+[00:44:31] Thread-19 admin(admin) | t.adx.opera.com | HTTPS | ALLOWED
+[00:44:31] Thread-6 admin(admin) | simage2.pubmatic.com | HTTPS | ALLOWED
+[00:44:31] Thread-11 admin(admin) | match.adsrvr.org | HTTPS | ALLOWED
+[00:44:31] Thread-8 admin(admin) | sync.taboola.com | HTTPS | ALLOWED
+[00:44:31] Thread-2 admin(admin) | x.bidswitch.net | HTTPS | ALLOWED
+[00:44:31] Thread-15 admin(admin) | dpm.demdex.net | HTTPS | ALLOWED
+[00:44:31] Thread-20 admin(admin) | idsync.rlcdn.com | HTTPS | ALLOWED
+[00:44:32] Thread-11 admin(admin) | clients4.google.com | HTTPS | ALLOWED
+[00:44:32] Thread-3 admin(admin) | dsum-sec.casalemedia.com | HTTPS | ALLOWED
+[00:44:32] Thread-16 admin(admin) | token.rubiconproject.com | HTTPS | ALLOWED
+[00:44:32] Thread-12 admin(admin) | pixel.rubiconproject.com | HTTPS | ALLOWED
+[00:44:32] Thread-3 admin(admin) | gql.twitch.tv | HTTPS | ALLOWED
+[00:44:32] Thread-3 admin(admin) | match.sharethrough.com | HTTPS | ALLOWED
+[00:44:32] Thread-9 admin(admin) | cm.g.doubleclick.net | HTTPS | ALLOWED
+[00:44:32] Thread-11 admin(admin) | s.seedtag.com | HTTPS | ALLOWED
+[00:44:32] Thread-14 admin(admin) | rtb-csync.smartadserver.com | HTTPS | ALLOWED
+[00:44:32] Thread-9 admin(admin) | ms-cookie-sync.presage.io | HTTPS | ALLOWED
+[00:44:32] Thread-5 admin(admin) | cr-p3.ladsp.com | HTTPS | ALLOWED
+[00:44:32] Thread-20 admin(admin) | pixel.rubiconproject.com | HTTPS | ALLOWED
+[00:44:32] Thread-15 admin(admin) | us-u.openx.net | HTTPS | ALLOWED
+[00:44:32] Thread-2 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:32] Thread-18 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:32] Thread-6 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:32] Thread-19 admin(admin) | match.adsrvr.org | HTTPS | ALLOWED
+[00:44:32] Thread-16 admin(admin) | www.facebook.com | HTTPS | ALLOWED
+[00:44:32] Thread-15 admin(admin) | cm.g.doubleclick.net | HTTPS | ALLOWED
+[00:44:32] Thread-5 admin(admin) | image6.pubmatic.com | HTTPS | ALLOWED
+[00:44:32] Thread-11 admin(admin) | cm.g.doubleclick.net | HTTPS | ALLOWED
+[00:44:32] Thread-15 admin(admin) | clients4.google.com | HTTPS | ALLOWED
+[00:44:33] Thread-12 admin(admin) | pippio.com | HTTPS | ALLOWED
+[00:44:33] Thread-14 admin(admin) | trace.mediago.io | HTTPS | ALLOWED
+[00:44:33] Thread-17 admin(admin) | uipglob.semasio.net | HTTPS | ALLOWED
+[00:44:33] Thread-3 admin(admin) | i.ctnsnet.com | HTTPS | ALLOWED
+[00:44:33] Thread-15 admin(admin) | s.seedtag.com | HTTPS | ALLOWED
+[00:44:33] Thread-16 admin(admin) | usersync.gumgum.com | HTTPS | ALLOWED
+[00:44:33] Thread-11 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:33] Thread-9 admin(admin) | s.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:33] Thread-19 admin(admin) | www.temu.com | HTTPS | ALLOWED
+[00:44:33] Thread-15 admin(admin) | x.bidswitch.net | HTTPS | ALLOWED
+[00:44:33] Thread-5 admin(admin) | jp-u.openx.net | HTTPS | ALLOWED
+[00:44:33] Thread-1 admin(admin) | ad.turn.com | HTTPS | ALLOWED
+[00:44:33] Thread-8 admin(admin) | ups.analytics.yahoo.com | HTTPS | ALLOWED
+[00:44:33] Thread-20 admin(admin) | s.ad.smaato.net | HTTPS | ALLOWED
+[00:44:33] Thread-3 admin(admin) | ssum-sec.casalemedia.com | HTTPS | ALLOWED
+[00:44:33] Thread-12 admin(admin) | ib.adnxs.com | HTTPS | ALLOWED
+[00:44:33] Thread-19 admin(admin) | ogury-match.dotomi.com | HTTPS | ALLOWED
+[00:44:33] Thread-16 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:33] Thread-20 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:33] Thread-18 admin(admin) | sync.inmobi.com | HTTPS | ALLOWED
+[00:44:33] Thread-17 admin(admin) | aax-eu.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:33] Thread-5 admin(admin) | pixel.tapad.com | HTTPS | ALLOWED
+[00:44:33] Thread-6 admin(admin) | sync.mathtag.com | HTTPS | ALLOWED
+[00:44:33] Thread-2 admin(admin) | www.temu.com | HTTPS | ALLOWED
+[00:44:34] Thread-1 admin(admin) | t.adx.opera.com | HTTPS | ALLOWED
+[00:44:34] Thread-8 admin(admin) | creativecdn.com | HTTPS | ALLOWED
+[00:44:34] Thread-15 admin(admin) | sync.srv.stackadapt.com | HTTPS | ALLOWED
+[00:44:34] Thread-3 admin(admin) | sync-tm.everesttech.net | HTTPS | ALLOWED
+[00:44:34] Thread-2 admin(admin) | pixel.tapad.com | HTTPS | ALLOWED
+[00:44:34] Thread-3 admin(admin) | aax-eu.amazon-adsystem.com | HTTPS | ALLOWED
+[00:44:34] Thread-2 admin(admin) | rtb-csync.smartadserver.com | HTTPS | ALLOWED
+[00:44:34] Thread-20 admin(admin) | www.temu.com | HTTPS | ALLOWED
+[00:44:34] Thread-14 admin(admin) | usersync.gumgum.com | HTTPS | ALLOWED
+[00:44:34] Thread-16 admin(admin) | sync.crwdcntrl.net | HTTPS | ALLOWED
+[00:44:34] Thread-5 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:34] Thread-11 admin(admin) | www.google.com | HTTPS | ALLOWED
+[00:44:34] Thread-7 admin(admin) | cm.g.doubleclick.net | HTTPS | ALLOWED
+[00:44:34] Thread-9 admin(admin) | uipglob.semasio.net | HTTPS | ALLOWED
+[00:44:34] Thread-5 admin(admin) | t.oa.opera.com | HTTPS | ALLOWED
+[00:44:34] Thread-11 admin(admin) | ad.turn.com | HTTPS | ALLOWED
+[00:44:34] Thread-20 admin(admin) | image2.pubmatic.com | HTTPS | ALLOWED
+[00:44:34] Thread-19 admin(admin) | image4.pubmatic.com | HTTPS | ALLOWED
+[00:44:34] Thread-10 admin(admin) | simage2.pubmatic.com | HTTPS | ALLOWED
+[00:44:34] Thread-4 admin(admin) | ups.analytics.yahoo.com | HTTPS | ALLOWED
+[00:44:34] Thread-14 admin(admin) | dsp-2.presage.io | HTTPS | ALLOWED
+[00:44:34] Thread-11 admin(admin) | x.bidswitch.net | HTTPS | ALLOWED
+[00:44:34] Thread-1 admin(admin) | sync-tm.everesttech.net | HTTPS | ALLOWED
+[00:44:34] Thread-3 admin(admin) | gql.twitch.tv | HTTPS | ALLOWED
+[00:44:34] Thread-17 admin(admin) | match.sharethrough.com | HTTPS | ALLOWED
+[00:44:34] Thread-1 admin(admin) | pool.liftdsp.com | HTTPS | ALLOWED
+[00:44:35] Thread-4 admin(admin) | ups.analytics.yahoo.com | HTTPS | ALLOWED
+[00:44:35] Thread-11 admin(admin) | ogads-pa.clients6.google.com | HTTPS | ALLOWED
+[00:44:35] Thread-3 admin(admin) | lh3.google.com | HTTPS | ALLOWED
+[00:44:35] Thread-20 admin(admin) | us-u.openx.net | HTTPS | ALLOWED
+[00:44:35] Thread-14 admin(admin) | simage2.pubmatic.com | HTTPS | ALLOWED
+[00:44:36] Thread-13 admin(admin) | us-u.openx.net | HTTPS | ALLOWED
+[00:44:38] Thread-17 admin(admin) | dsum-sec.casalemedia.com | HTTPS | ALLOWED

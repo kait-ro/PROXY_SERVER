@@ -9,7 +9,6 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
-#include <semaphore.h>
 #include <atomic>
 
 extern thread_local int threadNumber;
@@ -28,8 +27,7 @@ std::string currentRole;
     std::mutex queueMutex;
     std::condition_variable cv;
     std::mutex authMutex;
-    sem_t clientSlots;
-    LRUCache cache{5}; 
+    LRUCache cache{200};
 public:
 ProxyServer(int port);
 void setUser(const std::string& user, const std::string&
