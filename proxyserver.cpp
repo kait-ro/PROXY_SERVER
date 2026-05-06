@@ -60,7 +60,6 @@ static string resolveHost(const string& host)
     return ipStr;
 }
 
-// Returns true if non-blocking connect on fd completes within CONNECT_TIMEOUT_SEC seconds.
 static bool connectWithTimeout(int fd, const struct sockaddr* addr, socklen_t addrlen)
 {
     int flags = fcntl(fd, F_GETFL, 0);
@@ -96,8 +95,6 @@ static bool connectWithTimeout(int fd, const struct sockaddr* addr, socklen_t ad
     fcntl(fd, F_SETFL, flags);
     return err == 0;
 }
-
-using namespace std;
 
 thread_local int threadNumber = -1;
 
