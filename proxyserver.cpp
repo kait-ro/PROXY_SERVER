@@ -19,6 +19,7 @@
 #include <unordered_map>
 #include <mutex>
 #include <ctime>
+#include <csignal>
 
 #define BUFFER_SIZE 65536
 #define CONNECT_TIMEOUT_SEC 10
@@ -104,6 +105,9 @@ ProxyServer::ProxyServer(int port)
 {
     this->port = port;
     auth.loadUsers("users.txt");
+    // Prevent SIGPIPE from killing the process when writing to a closed socket.
+    // send() will return -1 with errno EPIPE instead.
+    signal(SIGPIPE, SIG_IGN);
 }
 string ProxyServer::extractHost(const string& request)
 {
@@ -111,6 +115,7 @@ if (request.find("CONNECT") == 0)
 {
 size_t start = request.find("CONNECT ") + 8;
 size_t end = request.find(":", start);
+if (end == string::npos) return "";
 return request.substr(start, end - start);
 }
 size_t pos = request.find("Host:");
@@ -120,6 +125,7 @@ return "";
     while (start < request.size() && request[start] == ' ')
     start++;
 size_t end = request.find("\r\n", start);
+if (end == string::npos) return "";
 string host = request.substr(start, end - start);
 size_t colonPos = host.find(":");
 if (colonPos != string::npos)
@@ -182,6 +188,7 @@ if (authPos != string::npos)
 {
     size_t start = request.find("Basic ") + 6;
     size_t end = request.find("\r\n", start);
+    if (end == string::npos) end = request.size();
 
     string encoded = request.substr(start, end - start);
 
@@ -528,11 +535,36 @@ setsockopt(remote_socket, SOL_SOCKET, SO_RCVTIMEO,
 send(remote_socket, modifiedRequest.c_str(), modifiedRequest.size(), 0);
 // FORWARD RESPONSE
 string fullResponse;
+bool capacityReserved = false;
 
 while ((bytes = recv(remote_socket, buffer.data(), BUFFER_SIZE, 0)) > 0)
 {
     fullResponse.append(buffer.data(), bytes);
     send(client_socket, buffer.data(), bytes, 0);
+
+    // Once we have the full response headers, parse Content-Length and
+    // pre-allocate to avoid repeated reallocations as the body arrives.
+    if (!capacityReserved)
+    {
+        size_t headerEnd = fullResponse.find("\r\n\r\n");
+        if (headerEnd != string::npos)
+        {
+            size_t clPos = fullResponse.find("Content-Length:");
+            if (clPos != string::npos && clPos < headerEnd)
+            {
+                size_t valStart = clPos + 15;
+                while (valStart < fullResponse.size() && fullResponse[valStart] == ' ')
+                    valStart++;
+                size_t valEnd = fullResponse.find("\r\n", valStart);
+                if (valEnd != string::npos)
+                {
+                    long long contentLength = stoll(fullResponse.substr(valStart, valEnd - valStart));
+                    fullResponse.reserve(headerEnd + 4 + (size_t)contentLength);
+                }
+            }
+            capacityReserved = true;
+        }
+    }
 }
 cout << "Response sent back to browser\n";
 
@@ -592,6 +624,9 @@ void ProxyServer::startServer()
         cout << "Socket creation failed\n";
         return;
     }
+
+    int opt = 1;
+    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
     address.sin_family = AF_INET;
     address.sin_port = htons(port);
