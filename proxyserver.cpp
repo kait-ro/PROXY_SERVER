@@ -462,6 +462,11 @@ int remote_socket = socket(AF_INET, SOCK_STREAM, 0);
 if (remote_socket < 0)
 {
     cout << "Socket creation failed\n";
+    string response =
+    "HTTP/1.1 500 Internal Server Error\r\n"
+    "Connection: close\r\n\r\n";
+    send(client_socket, response.c_str(), response.size(), 0);
+    logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTP", "SOCKET ERROR");
     close(client_socket);
     return;
 }
@@ -491,7 +496,10 @@ cout << "Connected to HTTP server\n";
 // BUILD REQUEST
 string modifiedRequest = request;
 
-// FIX 7: Search for "\r\nConnection:" to avoid matching "Proxy-Connection:"
+// Searching for plain "Connection:" would also match "Proxy-Connection:" because
+// "Connection:" is a substring of it. Every real header starts right after a \r\n,
+// so anchoring the search to "\r\nConnection:" guarantees we only hit the actual
+// Connection header and never the Proxy-Connection one.
 size_t connPos = modifiedRequest.find("\r\nConnection:");
 if (connPos != string::npos)
 {
