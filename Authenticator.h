@@ -5,12 +5,12 @@ using namespace std;
 #include <map>
 class Authenticator {
 private:
-map<string, pair<string, string>> users;
+    map<string, pair<string, string>> users;
 public:
-void loadUsers(const string& filename);
-string login(const string& user, const string& pass);
-bool signup(const string& user,
-const string& pass,
-const string& role);
+    void loadUsers(const string& filename);
+    string login(const string& user, const string& pass);
+    bool signup(const string& user,
+    const string& pass,
+    const string& role);
 };
 #endif

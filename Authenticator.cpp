@@ -40,19 +40,16 @@ void Authenticator::loadUsers(const string& filename)
 
 string Authenticator::login(const string& user, const string& pass)
 {
-string hashedPass = hashPassword(pass);
+    string hashedPass = hashPassword(pass);
 
-if (users.find(user) != users.end() &&
-users[user].first == hashedPass)
-{
-return users[user].second;
-}
-return "";
+    if (users.find(user) != users.end() && users[user].first == hashedPass)
+    {
+        return users[user].second;
+    }
+    return "";
 }
 
-bool Authenticator::signup(const string& user,
-const string& pass,
-const string& role)
+bool Authenticator::signup(const string& user, const string& pass, const string& role)
 {
     if (users.find(user) != users.end())
     {

@@ -8,10 +8,7 @@
 #include <mach-o/dyld.h>
 using namespace std;
 
-// Resolve the log path relative to the binary's own directory, not the CWD.
-// This ensures proxy.log always lands in the project folder regardless of
-// where the binary is invoked from.
-static std::string resolveLogPath()
+static string resolveLogPath()
 {
     char execBuf[PATH_MAX];
     uint32_t size = sizeof(execBuf);
@@ -19,23 +16,23 @@ static std::string resolveLogPath()
         return "proxy.log";
     char dirBuf[PATH_MAX];
     strncpy(dirBuf, execBuf, PATH_MAX);
-    return std::string(dirname(dirBuf)) + "/proxy.log";
+    return string(dirname(dirBuf)) + "/proxy.log";
 }
 
 Logger::Logger()
 {
-    std::string logPath = resolveLogPath();
-    logFile.open(logPath, std::ios::app);
+    string logPath = resolveLogPath();
+    logFile.open(logPath, ios::app);
     if (!logFile.is_open())
-        std::cerr << "Logger: failed to open " << logPath << " — check path and permissions\n";
+        cerr << "Logger: failed to open " << logPath << " — check path and permissions\n";
 }
 
-void Logger::log(const std::string& user,
-                 const std::string& host,
-                 const std::string& type,
-                 const std::string& status)
+void Logger::log(const string& user,
+                 const string& host,
+                 const string& type,
+                 const string& status)
 {
-    std::lock_guard<std::mutex> lock(logMutex);
+    lock_guard<mutex> lock(logMutex);
 
     if (!logFile.is_open() || !logFile.good())
         return;
@@ -51,7 +48,7 @@ void Logger::log(const std::string& user,
 
 Logger::~Logger()
 {
-    std::lock_guard<std::mutex> lock(logMutex);
+    lock_guard<mutex> lock(logMutex);
     if (logFile.is_open())
         logFile.close();
 }
