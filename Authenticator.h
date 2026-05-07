@@ -9,7 +9,7 @@ map<string, pair<string, string>> users;
 public:
 void loadUsers(const string& filename);
 string login(const string& user, const string& pass);
-void signup(const string& user,
+bool signup(const string& user,
 const string& pass,
 const string& role);
 };

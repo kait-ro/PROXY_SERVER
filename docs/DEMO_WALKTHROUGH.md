@@ -218,12 +218,45 @@ This returns a JSON of all headers that `httpbin.org` received.
 
 ---
 
-## Step 11 — Performance: DNS Caching (Optional Advanced Demo)
+## Step 11 — Performance: DNS Caching
 
-Add a print statement or point to the `resolveHost` function and explain:
+**Setup:** Open a second terminal. Make sure the proxy is running and you are logged in as any valid user (e.g. `test2`).
+
+**Step 1 — First request (cache miss):**
+```bash
+curl -x http://test2:PASSWORD@127.0.0.1:8080 http://example.com -o /dev/null -s
+```
+
+**Expected terminal output on the proxy:**
+```
+[DNS CACHE MISS]   example.com - performing fresh lookup...
+[DNS CACHE STORED] example.com -> 93.184.216.34  (TTL: 30s)
+```
+
+**Step 2 — Repeat the same request within 30 seconds:**
+```bash
+curl -x http://test2:PASSWORD@127.0.0.1:8080 http://example.com -o /dev/null -s
+```
+
+**Expected terminal output on the proxy:**
+```
+[DNS CACHE HIT]    example.com -> 93.184.216.34  (expires in 27s)
+```
+No `getaddrinfo` call is made — the IP comes back instantly from the in-memory map.
+
+**Step 3 — Show TTL expiry (wait 30 seconds, then repeat):**
+
+After 30 seconds have passed since the first request, run the curl again.
+
+**Expected terminal output:**
+```
+[DNS CACHE MISS]   example.com - performing fresh lookup...
+[DNS CACHE STORED] example.com -> 93.184.216.34  (TTL: 30s)
+```
+The entry expired, so a fresh DNS lookup is performed and the result is stored again.
 
 **What to say:**
-> "On the first request to any hostname, the proxy calls `getaddrinfo` to translate the domain name into an IP address. This is a network call to a DNS server and takes 5–50 milliseconds. On every subsequent request to the same hostname within 30 seconds, we return the cached IP immediately. With 20 threads all potentially hitting the same sites, this avoids hundreds of redundant DNS lookups per minute."
+> "On the first request to any hostname, the proxy calls `getaddrinfo` to translate the domain name into an IP address. This is a network call to a DNS server and can take 5–50 milliseconds. The result is stored in a thread-safe hash map with a 30-second TTL. On every subsequent request to the same hostname within that window, the proxy skips the DNS call entirely and returns the cached IP immediately. With 20 threads all potentially hitting the same popular sites, this eliminates hundreds of redundant DNS lookups per minute. After the TTL expires the entry is considered stale and the proxy performs a fresh lookup to avoid serving outdated records."
 
 ---
 

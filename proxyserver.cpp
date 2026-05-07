@@ -38,14 +38,24 @@ static string resolveHost(const string& host)
         lock_guard<mutex> lock(dnsCacheMutex);
         auto it = dnsCache.find(host);
         if (it != dnsCache.end() && time(nullptr) < it->second.second)
+        {
+            long ttlLeft = (long)(it->second.second - time(nullptr));
+            cout << "[DNS CACHE HIT]    " << host << " -> " << it->second.first
+                 << "  (expires in " << ttlLeft << "s)" << endl;
             return it->second.first;
+        }
     }
+
+    cout << "[DNS CACHE MISS]   " << host << " - performing fresh lookup..." << endl;
 
     struct addrinfo hints{}, *res;
     hints.ai_family   = AF_INET;
     hints.ai_socktype = SOCK_STREAM;
     if (getaddrinfo(host.c_str(), nullptr, &hints, &res) != 0)
+    {
+        cout << "[DNS CACHE]        lookup FAILED for " << host << endl;
         return "";
+    }
 
     char ip[INET_ADDRSTRLEN];
     inet_ntop(AF_INET, &reinterpret_cast<struct sockaddr_in*>(res->ai_addr)->sin_addr,
@@ -57,6 +67,8 @@ static string resolveHost(const string& host)
         lock_guard<mutex> lock(dnsCacheMutex);
         dnsCache[host] = {ipStr, time(nullptr) + DNS_CACHE_TTL_SEC};
     }
+    cout << "[DNS CACHE STORED] " << host << " -> " << ipStr
+         << "  (TTL: " << DNS_CACHE_TTL_SEC << "s)" << endl;
     return ipStr;
 }
 
@@ -204,7 +216,10 @@ if (authPos != string::npos)
         string user = decoded.substr(0, colon);
         string pass = decoded.substr(colon + 1);
 
-        role = auth.login(user, pass);
+        {
+            lock_guard<mutex> authLock(authMutex);
+            role = auth.login(user, pass);
+        }
         username = user;
     }
 }
@@ -220,6 +235,7 @@ if (role == "")
     send(client_socket, response.c_str(), response.length(), 0);
 
     cout << "Authentication failed\n";
+    logger.log("Thread-" + to_string(threadNumber) + " " + (username.empty() ? "unknown" : username) + "(none)", "-", "AUTH", "FAILED");
     cout << "END handling on thread: " << threadNumber << endl;
 
     close(client_socket);
@@ -260,7 +276,10 @@ int connectPort = 443;
 size_t portColon = request.find(":", request.find("CONNECT ") + 8);
 size_t portEnd   = request.find(" ", portColon);
 if (portColon != string::npos && portEnd != string::npos)
-    connectPort = stoi(request.substr(portColon + 1, portEnd - portColon - 1));
+{
+    try { connectPort = stoi(request.substr(portColon + 1, portEnd - portColon - 1)); }
+    catch (...) { connectPort = 443; }
+}
 }
 // DNS with 30s cache — avoids repeated lookups for the same host
 string httpsIP = resolveHost(host);
@@ -273,6 +292,7 @@ cout << "DNS failed\n";
     "Connection: close\r\n\r\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
+    logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTPS", "DNS FAIL");
     close(client_socket);
     cout << "END handling on thread: " << threadNumber << endl;
 
@@ -289,6 +309,7 @@ cout << "Socket creation failed\n";
     "Connection: close\r\n\r\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
+    logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTPS", "SOCKET ERROR");
     close(client_socket);
     cout << "END handling on thread: " << threadNumber << endl;
 return;
@@ -305,7 +326,7 @@ cout << "HTTPS connect failed\n";
     "Connection: close\r\n\r\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
-
+    logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTPS", "TIMEOUT");
     close(remote_socket);
     close(client_socket);
     cout << "END handling on thread: " << threadNumber << endl;
@@ -431,6 +452,7 @@ if (httpIP.empty())
     "Connection: close\r\n\r\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
+    logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTP", "DNS FAIL");
     close(client_socket);
     return;
 }
@@ -459,7 +481,7 @@ if (!connectWithTimeout(remote_socket, (sockaddr*)&httpAddr, sizeof(httpAddr)))
     "Connection: close\r\n\r\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
-
+    logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTP", "TIMEOUT");
     close(remote_socket);
     close(client_socket);
     return;
@@ -555,8 +577,13 @@ while ((bytes = recv(remote_socket, buffer.data(), BUFFER_SIZE, 0)) > 0)
                 size_t valEnd = fullResponse.find("\r\n", valStart);
                 if (valEnd != string::npos)
                 {
-                    long long contentLength = stoll(fullResponse.substr(valStart, valEnd - valStart));
-                    fullResponse.reserve(headerEnd + 4 + (size_t)contentLength);
+                    try
+                    {
+                        long long contentLength = stoll(fullResponse.substr(valStart, valEnd - valStart));
+                        if (contentLength > 0)
+                            fullResponse.reserve(headerEnd + 4 + (size_t)contentLength);
+                    }
+                    catch (...) {}
                 }
             }
             capacityReserved = true;

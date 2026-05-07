@@ -1,9 +1,9 @@
 #include "Authenticator.h"
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <openssl/sha.h>
 #include <iomanip>
-#include <sstream>
 
 using namespace std;
 
@@ -24,13 +24,18 @@ string hashPassword(const string& password)
 
 void Authenticator::loadUsers(const string& filename)
 {
-ifstream file(filename);
-string user, pass, role;
-while (file >> user >> pass >> role)
-{
-users[user] = {pass, role};
-}
-file.close();
+    ifstream file(filename);
+    if (!file.is_open())
+    {
+        cerr << "Authenticator: failed to open " << filename << " — no users loaded\n";
+        return;
+    }
+    string user, pass, role;
+    while (file >> user >> pass >> role)
+    {
+        users[user] = {pass, role};
+    }
+    file.close();
 }
 
 string Authenticator::login(const string& user, const string& pass)
@@ -45,16 +50,21 @@ return users[user].second;
 return "";
 }
 
-void Authenticator::signup(const string& user,
+bool Authenticator::signup(const string& user,
 const string& pass,
 const string& role)
 {
-ofstream file("users.txt", ios::app);
+    if (users.find(user) != users.end())
+    {
+        cerr << "Authenticator: user '" << user << "' already exists\n";
+        return false;
+    }
 
-string hashedPass = hashPassword(pass);
+    ofstream file("users.txt", ios::app);
+    string hashedPass = hashPassword(pass);
+    file << "\n" << user << " " << hashedPass << " " << role << endl;
+    file.close();
 
-file << "\n" << user << " " << hashedPass << " " << role << endl;
-
-file.close();
-users[user] = {hashedPass, role};
+    users[user] = {hashedPass, role};
+    return true;
 }

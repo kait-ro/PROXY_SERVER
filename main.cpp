@@ -18,8 +18,10 @@ cout << "Enter password: ";
 cin >> password;
 cout << "Enter role (admin/user): ";
 cin >> role;
-auth.signup(username, password, role);
-cout << "Signup successful!\n";
+if (auth.signup(username, password, role))
+    cout << "Signup successful!\n";
+else
+    cout << "Username already exists. Please log in instead.\n";
 }
 while (true)
 {
