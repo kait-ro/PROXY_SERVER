@@ -1,0 +1,17 @@
+name: CI
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install OpenSSL + pkg-config
+        run: sudo apt-get update && sudo apt-get install -y libssl-dev pkg-config
+      - name: Build proxy
+        run: make proxy
+      - name: Run unit tests
+        run: make test

@@ -1,13 +1,18 @@
-CXXFLAGS = -I/opt/homebrew/opt/openssl@3/include
-LDFLAGS = -L/opt/homebrew/opt/openssl@3/lib -lssl -lcrypto
+CXX ?= g++
+CXXFLAGS ?= -std=c++17 -Wall -Wextra $(shell pkg-config --cflags openssl 2>/dev/null)
+LDLIBS   ?= $(shell pkg-config --libs openssl 2>/dev/null || echo -lssl -lcrypto)
 
-proxy: main.cpp proxyServer.cpp Authenticator.cpp WebsiteFilter.cpp Logger.cpp LRUCache.cpp
-	g++ main.cpp ProxyServer.cpp Authenticator.cpp WebsiteFilter.cpp Logger.cpp LRUCache.cpp $(CXXFLAGS) $(LDFLAGS) -o proxy
+SRCS = main.cpp proxyserver.cpp Authenticator.cpp WebsiteFilter.cpp Logger.cpp LRUCache.cpp
+
+proxy: $(SRCS)
+	$(CXX) $(CXXFLAGS) $(SRCS) $(LDLIBS) -o proxy
+
+test: tests/test_lru.cpp LRUCache.cpp
+	$(CXX) $(CXXFLAGS) tests/test_lru.cpp LRUCache.cpp -o test_lru
+	./test_lru
+
 run: proxy
 	./proxy
 
 clean:
-	rm -f proxy
-kill-port:
-	@echo "Killing process on port $(PORT)..."
-	@lsof -ti :$(PORT) | xargs kill -9 2>/dev/null || true
+	rm -f proxy test_lru
