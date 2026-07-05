@@ -25,7 +25,6 @@
 #define CONNECT_TIMEOUT_SEC 10
 #define RECV_TIMEOUT_SEC    30
 #define DNS_CACHE_TTL_SEC   30
-#define MAX_REQUEST_SIZE    8192  // 8KB max request size to prevent DoS payload attacks
 
 // Thread-safe DNS cache: hostname -> (ipv4 string, expiry timestamp)
 static mutex dnsCacheMutex;
@@ -207,6 +206,41 @@ void ProxyServer::recordUserConnection(const string& user, int delta)
     lock_guard<mutex> lock(metricsMutex);
     userMetrics[user].activeConnections += delta;
 }
+
+// Request Size Limit: Get max allowed size based on user role
+int ProxyServer::getMaxRequestSize(const string& role)
+{
+    if (role == "admin") {
+        return MAX_REQUEST_SIZE_ADMIN;
+    } else if (role == "premium") {
+        return MAX_REQUEST_SIZE_PREMIUM;
+    } else {
+        return MAX_REQUEST_SIZE_STANDARD;
+    }
+}
+
+// Request Size Limit: Check and log size violations
+bool ProxyServer::checkAndLogRequestSize(int requestSize, const string& role, const string& user)
+{
+    int maxSize = getMaxRequestSize(role);
+    
+    lock_guard<mutex> lock(metricsMutex);
+    
+    // Update metrics regardless of pass/fail
+    if (requestSize > maxSize) {
+        userMetrics[user].sizeViolationCount++;
+        userMetrics[user].lastSizeViolationTime = time(nullptr);
+    }
+    
+    // Track largest request
+    if (requestSize > userMetrics[user].largestRequestSize) {
+        userMetrics[user].largestRequestSize = requestSize;
+    }
+    
+    // Return true if request is within limit
+    return requestSize <= maxSize;
+}
+
 string ProxyServer::extractHost(const string& request)
 {
 if (request.find("CONNECT") == 0)
@@ -272,24 +306,6 @@ BUFFER_SIZE, 0);
 if (bytes <= 0) return;
 cout << "START handling on thread: " << threadNumber << endl;
 
-// REQUEST SIZE LIMIT CHECK (DoS Protection)
-if (bytes > MAX_REQUEST_SIZE)
-{
-    cout << "[REQUEST SIZE LIMIT] Request size " << bytes << " bytes exceeds maximum " << MAX_REQUEST_SIZE << " bytes\n";
-    
-    string response =
-        "HTTP/1.1 413 Payload Too Large\r\n"
-        "Content-Length: 28\r\n"
-        "Connection: close\r\n\r\n"
-        "Request size exceeds limit";
-    
-    send(client_socket, response.c_str(), response.length(), 0);
-    logger.log("Thread-" + to_string(threadNumber) + " unknown", "-", "SIZE_LIMIT", "EXCEEDED");
-    close(client_socket);
-    cout << "END handling on thread: " << threadNumber << endl;
-    return;
-}
-
 string request(buffer.data(), bytes);
 if (request.find("CONNECT") != 0)
 {
@@ -350,6 +366,27 @@ if (role == "")
     return;
 }
 cout << "Authentication successful (" << role << ")\n";
+
+// =========================================================
+// REQUEST SIZE LIMIT CHECK (Role-based)
+// =========================================================
+int maxRequestSize = getMaxRequestSize(role);
+if (!checkAndLogRequestSize(bytes, role, username)) {
+    cout << "[REQUEST SIZE LIMIT] User '" << username << "' (" << role << ") sent " << bytes 
+         << " bytes, exceeds limit of " << maxRequestSize << " bytes\n";
+    
+    string response =
+        "HTTP/1.1 413 Payload Too Large\r\n"
+        "Content-Length: 28\r\n"
+        "Connection: close\r\n\r\n"
+        "Request size exceeds limit";
+    
+    send(client_socket, response.c_str(), response.length(), 0);
+    logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", "-", "SIZE_LIMIT", "EXCEEDED");
+    cout << "END handling on thread: " << threadNumber << endl;
+    close(client_socket);
+    return;
+}
 
 // =========================================================
 // DDoS PROTECTION CHECKS

@@ -20,6 +20,11 @@ struct ClientMetrics {
     int activeConnections = 0;
     time_t lastRequestTime = time(nullptr);
     int requestsThisSecond = 0;
+    
+    // Request size monitoring
+    int sizeViolationCount = 0;        // Total size violations
+    int largestRequestSize = 0;        // Largest request seen
+    time_t lastSizeViolationTime = 0;  // When last violation occurred
 };
 
 class ProxyServer
@@ -44,12 +49,17 @@ std::string currentRole;
     std::mutex metricsMutex;
     std::atomic<int> queueSize{0};
     
-    // DDoS Limits (configurable)
+    // DDoS & Request Limits (configurable)
     static constexpr int MAX_REQUESTS_PER_SEC = 100;
     static constexpr int MAX_CONNECTIONS_PER_USER = 10;
     static constexpr int MAX_CONNECTIONS_PER_IP = 20;
     static constexpr int MAX_QUEUE_SIZE = 200;
     static constexpr int IDLE_TIMEOUT_SEC = 300;
+    
+    // Request size limits (in bytes) - by role
+    static constexpr int MAX_REQUEST_SIZE_ADMIN = 52428800;    // 50 MB for admins
+    static constexpr int MAX_REQUEST_SIZE_PREMIUM = 10485760;  // 10 MB for premium
+    static constexpr int MAX_REQUEST_SIZE_STANDARD = 8192;     // 8 KB for standard
     
 public:
 ProxyServer(int port);
@@ -65,5 +75,9 @@ bool checkAndUpdateIPRateLimit(const std::string& ip);
 bool checkUserConnectionLimit(const std::string& user);
 void recordUserConnection(const std::string& user, int delta);
 std::string getClientIP(int client_socket);
+    
+// Request size limit methods
+int getMaxRequestSize(const std::string& role);
+bool checkAndLogRequestSize(int requestSize, const std::string& role, const std::string& user);
 };
 #endif
