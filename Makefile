@@ -7,7 +7,7 @@ SRCS = main.cpp proxyserver.cpp Authenticator.cpp WebsiteFilter.cpp Logger.cpp L
 proxy: $(SRCS)
 	$(CXX) $(CXXFLAGS) $(SRCS) $(LDLIBS) -o proxy
 
-test: test_lru test_auth test_filter test_dns test_http test_connect test_ddos
+test: test_lru test_auth test_filter test_dns test_http test_connect test_ddos test_request_size
 	./test_lru
 	./test_auth
 	./test_filter
@@ -15,6 +15,7 @@ test: test_lru test_auth test_filter test_dns test_http test_connect test_ddos
 	./test_http
 	./test_connect
 	./test_ddos
+	./test_request_size
 
 test_lru: tests/test_lru.cpp LRUCache.cpp
 	$(CXX) $(CXXFLAGS) tests/test_lru.cpp LRUCache.cpp -o test_lru
@@ -37,8 +38,11 @@ test_connect: tests/test_connect_tunnel.cpp
 test_ddos: tests/test_ddos_protection.cpp
 	$(CXX) $(CXXFLAGS) tests/test_ddos_protection.cpp -o test_ddos
 
+test_request_size: tests/test_request_size_limit.cpp
+	$(CXX) $(CXXFLAGS) tests/test_request_size_limit.cpp -o test_request_size
+
 run: proxy
 	./proxy
 
 clean:
-	rm -f proxy test_lru test_auth test_filter test_dns test_http test_connect test_ddos
+	rm -f proxy test_lru test_auth test_filter test_dns test_http test_connect test_ddos test_request_size

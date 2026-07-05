@@ -25,6 +25,7 @@
 #define CONNECT_TIMEOUT_SEC 10
 #define RECV_TIMEOUT_SEC    30
 #define DNS_CACHE_TTL_SEC   30
+#define MAX_REQUEST_SIZE    8192  // 8KB max request size to prevent DoS payload attacks
 
 // Thread-safe DNS cache: hostname -> (ipv4 string, expiry timestamp)
 static mutex dnsCacheMutex;
@@ -270,6 +271,25 @@ int bytes = recv(client_socket, buffer.data(),
 BUFFER_SIZE, 0);
 if (bytes <= 0) return;
 cout << "START handling on thread: " << threadNumber << endl;
+
+// REQUEST SIZE LIMIT CHECK (DoS Protection)
+if (bytes > MAX_REQUEST_SIZE)
+{
+    cout << "[REQUEST SIZE LIMIT] Request size " << bytes << " bytes exceeds maximum " << MAX_REQUEST_SIZE << " bytes\n";
+    
+    string response =
+        "HTTP/1.1 413 Payload Too Large\r\n"
+        "Content-Length: 28\r\n"
+        "Connection: close\r\n\r\n"
+        "Request size exceeds limit";
+    
+    send(client_socket, response.c_str(), response.length(), 0);
+    logger.log("Thread-" + to_string(threadNumber) + " unknown", "-", "SIZE_LIMIT", "EXCEEDED");
+    close(client_socket);
+    cout << "END handling on thread: " << threadNumber << endl;
+    return;
+}
+
 string request(buffer.data(), bytes);
 if (request.find("CONNECT") != 0)
 {
