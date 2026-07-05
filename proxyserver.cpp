@@ -118,6 +118,94 @@ ProxyServer::ProxyServer(int port)
     // send() will return -1 with errno EPIPE instead.
     signal(SIGPIPE, SIG_IGN);
 }
+
+// Extract client IP address from socket
+string ProxyServer::getClientIP(int client_socket)
+{
+    struct sockaddr_in addr{};
+    socklen_t addrLen = sizeof(addr);
+    if (getpeername(client_socket, (struct sockaddr*)&addr, &addrLen) < 0)
+        return "unknown";
+    
+    char ipStr[INET_ADDRSTRLEN];
+    inet_ntop(AF_INET, &addr.sin_addr, ipStr, sizeof(ipStr));
+    return string(ipStr);
+}
+
+// DDoS Protection: Check and update per-user rate limit
+bool ProxyServer::checkAndUpdateUserRateLimit(const string& user)
+{
+    lock_guard<mutex> lock(metricsMutex);
+    
+    ClientMetrics& metrics = userMetrics[user];
+    time_t now = time(nullptr);
+    
+    // Reset counter if we've moved to a new second
+    if (now != metrics.lastRequestTime) {
+        metrics.requestsThisSecond = 0;
+        metrics.lastRequestTime = now;
+    }
+    
+    metrics.requestsThisSecond++;
+    
+    // Reject if user exceeds rate limit
+    if (metrics.requestsThisSecond > MAX_REQUESTS_PER_SEC) {
+        cout << "[RATE LIMIT]       User '" << user << "' exceeded " << MAX_REQUESTS_PER_SEC 
+             << " req/sec (now at " << metrics.requestsThisSecond << ")" << endl;
+        return false;
+    }
+    
+    return true;
+}
+
+// DDoS Protection: Check and update per-IP rate limit
+bool ProxyServer::checkAndUpdateIPRateLimit(const string& ip)
+{
+    lock_guard<mutex> lock(metricsMutex);
+    
+    ClientMetrics& metrics = ipMetrics[ip];
+    time_t now = time(nullptr);
+    
+    // Reset counter if we've moved to a new second
+    if (now != metrics.lastRequestTime) {
+        metrics.requestsThisSecond = 0;
+        metrics.lastRequestTime = now;
+    }
+    
+    metrics.requestsThisSecond++;
+    
+    // Reject if IP exceeds rate limit
+    if (metrics.requestsThisSecond > MAX_REQUESTS_PER_SEC * 2) {  // IP limit is 2x per user
+        cout << "[RATE LIMIT]       IP '" << ip << "' exceeded " << (MAX_REQUESTS_PER_SEC * 2)
+             << " req/sec (now at " << metrics.requestsThisSecond << ")" << endl;
+        return false;
+    }
+    
+    return true;
+}
+
+// DDoS Protection: Check if user has hit connection limit
+bool ProxyServer::checkUserConnectionLimit(const string& user)
+{
+    lock_guard<mutex> lock(metricsMutex);
+    
+    ClientMetrics& metrics = userMetrics[user];
+    
+    if (metrics.activeConnections >= MAX_CONNECTIONS_PER_USER) {
+        cout << "[CONNECTION LIMIT] User '" << user << "' at max connections (" 
+             << MAX_CONNECTIONS_PER_USER << ")" << endl;
+        return false;
+    }
+    
+    return true;
+}
+
+// DDoS Protection: Record user connection (increment/decrement)
+void ProxyServer::recordUserConnection(const string& user, int delta)
+{
+    lock_guard<mutex> lock(metricsMutex);
+    userMetrics[user].activeConnections += delta;
+}
 string ProxyServer::extractHost(const string& request)
 {
 if (request.find("CONNECT") == 0)
@@ -242,6 +330,60 @@ if (role == "")
     return;
 }
 cout << "Authentication successful (" << role << ")\n";
+
+// =========================================================
+// DDoS PROTECTION CHECKS
+// =========================================================
+string clientIP = getClientIP(client_socket);
+
+// Check per-user rate limit
+if (!checkAndUpdateUserRateLimit(username)) {
+    string response =
+        "HTTP/1.1 429 Too Many Requests\r\n"
+        "Retry-After: 1\r\n"
+        "Content-Length: 0\r\n"
+        "Connection: close\r\n\r\n";
+    
+    send(client_socket, response.c_str(), response.length(), 0);
+    logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", "-", "RATE_LIMIT", "USER_EXCEEDED");
+    cout << "END handling on thread: " << threadNumber << endl;
+    close(client_socket);
+    return;
+}
+
+// Check per-IP rate limit
+if (!checkAndUpdateIPRateLimit(clientIP)) {
+    string response =
+        "HTTP/1.1 429 Too Many Requests\r\n"
+        "Retry-After: 1\r\n"
+        "Content-Length: 0\r\n"
+        "Connection: close\r\n\r\n";
+    
+    send(client_socket, response.c_str(), response.length(), 0);
+    logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", "-", "RATE_LIMIT", "IP_EXCEEDED");
+    cout << "END handling on thread: " << threadNumber << endl;
+    close(client_socket);
+    return;
+}
+
+// Check per-user connection limit
+if (!checkUserConnectionLimit(username)) {
+    string response =
+        "HTTP/1.1 429 Too Many Requests\r\n"
+        "Content-Length: 31\r\n"
+        "Connection: close\r\n\r\n"
+        "Too many active connections";
+    
+    send(client_socket, response.c_str(), response.length(), 0);
+    logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", "-", "CONN_LIMIT", "EXCEEDED");
+    cout << "END handling on thread: " << threadNumber << endl;
+    close(client_socket);
+    return;
+}
+
+// Record this connection
+recordUserConnection(username, 1);
+
 //=========================================================
 // HTTPS HANDLING
 //=========================================================
@@ -265,6 +407,7 @@ send(client_socket, response.c_str(), response.length(),
 logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTPS",
 "BLOCKED");
 cout << "END handling on thread: " << threadNumber << endl;
+recordUserConnection(username, -1);
 close(client_socket);
 return;
 }
@@ -293,6 +436,7 @@ cout << "DNS failed\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
     logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTPS", "DNS FAIL");
+    recordUserConnection(username, -1);
     close(client_socket);
     cout << "END handling on thread: " << threadNumber << endl;
 
@@ -310,6 +454,7 @@ cout << "Socket creation failed\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
     logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTPS", "SOCKET ERROR");
+    recordUserConnection(username, -1);
     close(client_socket);
     cout << "END handling on thread: " << threadNumber << endl;
 return;
@@ -327,6 +472,7 @@ cout << "HTTPS connect failed\n";
 
     send(client_socket, response.c_str(), response.length(), 0);
     logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTPS", "TIMEOUT");
+    recordUserConnection(username, -1);
     close(remote_socket);
     close(client_socket);
     cout << "END handling on thread: " << threadNumber << endl;
@@ -346,9 +492,20 @@ FD_ZERO(&fds);
 FD_SET(client_socket, &fds);
 FD_SET(remote_socket, &fds);
 int maxfd = max(client_socket, remote_socket) + 1;
-int activity = select(maxfd, &fds, NULL, NULL, NULL);
+
+// DDoS Protection: 5-minute idle timeout on CONNECT tunnel
+struct timeval timeout;
+timeout.tv_sec = IDLE_TIMEOUT_SEC;  // 300 seconds
+timeout.tv_usec = 0;
+
+int activity = select(maxfd, &fds, NULL, NULL, &timeout);
 if (activity <= 0)
-break;
+{
+    if (activity == 0)
+        cout << "[IDLE TIMEOUT]     CONNECT tunnel idle for " << IDLE_TIMEOUT_SEC << "s, closing\n";
+    break;
+}
+
 if (FD_ISSET(client_socket, &fds))
 {
 int bytes = recv(client_socket, buffer.data(),
@@ -365,6 +522,7 @@ send(client_socket, buffer.data(), bytes, 0);
 }
 }
 close(remote_socket);
+recordUserConnection(username, -1);
 close(client_socket);
 return;
 }
@@ -417,6 +575,7 @@ send(client_socket, response.c_str(), response.length(),
 0);
 logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTP",
 "BLOCKED");
+recordUserConnection(username, -1);
 close(client_socket);
 cout << "END handling on thread: " << threadNumber << endl;
 return;
@@ -437,6 +596,7 @@ if (isGet && cache.get(cacheKey, cachedResponse))
         "CACHE HIT"
     );
 
+    recordUserConnection(username, -1);
     close(client_socket);
     return;
 }
@@ -453,6 +613,7 @@ if (httpIP.empty())
 
     send(client_socket, response.c_str(), response.length(), 0);
     logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTP", "DNS FAIL");
+    recordUserConnection(username, -1);
     close(client_socket);
     return;
 }
@@ -467,6 +628,7 @@ if (remote_socket < 0)
     "Connection: close\r\n\r\n";
     send(client_socket, response.c_str(), response.size(), 0);
     logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTP", "SOCKET ERROR");
+    recordUserConnection(username, -1);
     close(client_socket);
     return;
 }
@@ -487,6 +649,7 @@ if (!connectWithTimeout(remote_socket, (sockaddr*)&httpAddr, sizeof(httpAddr)))
 
     send(client_socket, response.c_str(), response.length(), 0);
     logger.log("Thread-" + to_string(threadNumber) + " " + username + "(" + role + ")", host, "HTTP", "TIMEOUT");
+    recordUserConnection(username, -1);
     close(remote_socket);
     close(client_socket);
     return;
@@ -621,6 +784,10 @@ logger.log(
 );
 }
 cout << "END handling on thread: " << threadNumber << endl;
+
+// DDoS Protection: Release connection count
+recordUserConnection(username, -1);
+
 close(remote_socket);
 close(client_socket);
 }
